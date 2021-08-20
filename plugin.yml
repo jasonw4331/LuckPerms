@@ -1,0 +1,14 @@
+name: LuckPerms
+main: jasonwynn10\LuckPerms\LuckPerms
+src-namespace-prefix: jasonwynn10\LuckPerms
+version: 0.1.0
+api: [4.0.0]
+load: STARTUP
+author: jasonwynn10
+description: A permissions plugin
+website: https://luckperms.net
+
+commands:
+  luckperms:
+    description: Manage permissions
+    aliases: [lp, perm, perms, permission, permissions]
