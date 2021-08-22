@@ -5,13 +5,25 @@
   "homepage": "https://luckperms.net",
   "minimum-stability": "dev",
   "license": "MIT",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url":  "https://github.com/SOF3/await-std.git"
+    },
+    {
+      "type": "vcs",
+      "url":  "https://github.com/SOF3/await-generator.git"
+    }
+  ],
   "require": {
     "php": "^8.0",
     "ext-yaml": "*",
     "ext-pthreads": "*",
     "ext-chunkutils2": "^0.2.0",
     "ext-zlib": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "sof3/await-std": "dev-api4",
+    "sof3/await-generator": "dev-master"
   },
   "require-dev": {
     "phpstan/phpstan": "0.12.92",
