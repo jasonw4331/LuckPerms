@@ -8,7 +8,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url":  "https://github.com/SOF3/await-std.git"
+      "url":  "https://github.com/jasonwynn10/await-std.git"
     },
     {
       "type": "vcs",
@@ -22,7 +22,7 @@
     "ext-chunkutils2": "^0.2.0",
     "ext-zlib": "*",
     "ext-json": "*",
-    "sof3/await-std": "dev-api4",
+    "jasonwynn10/await-std": "dev-api4",
     "sof3/await-generator": "dev-master"
   },
   "require-dev": {
@@ -32,6 +32,9 @@
     "phpunit/phpunit": "^9.2"
   },
   "scripts": {
+    "remove-dev": [
+      "@composer install --no-dev --classmap-authoritative --ignore-platform-reqs"
+    ],
     "update-registry-annotations": [
       "@php build/generate-registry-annotations.php src"
     ]
