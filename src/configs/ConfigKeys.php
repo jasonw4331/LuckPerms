@@ -6,7 +6,7 @@ use jasonwynn10\LuckPerms\LuckPerms;
 use jasonwynn10\LuckPerms\query\Flag;
 use pocketmine\utils\EnumTrait;
 
-class ConfigKeys{
+final class ConfigKeys{
 	use EnumTrait {
 		__construct as Enum___construct;
 	}
