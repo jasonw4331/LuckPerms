@@ -17,79 +17,94 @@
  * @link http://www.pocketmine.net/
  *
  *
-*/
+ */
 
 declare(strict_types=1);
 
-use pocketmine\utils\RegistryUtils;
+namespace jasonwynn10\LuckPerms\build\update_registry_annotations;
+
+use function basename;
+use function class_exists;
+use function count;
+use function dirname;
+use function file_get_contents;
+use function file_put_contents;
+use function fwrite;
+use function implode;
+use function is_dir;
+use function ksort;
+use function mb_strtoupper;
+use function preg_match;
+use function sprintf;
+use function str_replace;
+use function substr;
+use const SORT_STRING;
 
 if(count($argv) !== 2){
-	die("Provide a path to process");
+	fwrite(STDERR, "Provide a path to process\n");
+	exit(1);
 }
 
-require dirname(__DIR__) . '/../../vendor/autoload.php'; // should be valid assuming folder plugin
-require dirname(__DIR__) . '/vendor/autoload.php';
+/**
+ * @param object[] $members
+ */
+function generateMethodAnnotations(string $namespaceName, array $members) : string{
+	$selfName = basename(__FILE__);
+	$lines = ["/**"];
+	$lines[] = " * This doc-block is generated automatically, do not modify it manually.";
+	$lines[] = " * This must be regenerated whenever registry members are added, removed or changed.";
+	$lines[] = " * @see build/$selfName";
+	$lines[] = " * @generate-registry-docblock";
+	$lines[] = " *";
 
-foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($argv[1], \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_PATHNAME)) as $file){
-	if(substr($file, -4) !== ".php"){
-		echo 'Exit -1'.PHP_EOL;
-		continue;
+	static $lineTmpl = " * @method static %2\$s %s()";
+	$memberLines = [];
+	foreach($members as $name => $member){
+		$reflect = new \ReflectionClass($member);
+		while($reflect !== false && $reflect->isAnonymous()){
+			$reflect = $reflect->getParentClass();
+		}
+		if($reflect === false){
+			$typehint = "object";
+		}elseif($reflect->getNamespaceName() === $namespaceName){
+			$typehint = $reflect->getShortName();
+		}else{
+			$typehint = '\\' . $reflect->getName();
+		}
+		$accessor = mb_strtoupper($name);
+		$memberLines[$accessor] = sprintf($lineTmpl, $accessor, $typehint);
 	}
-	echo $file.PHP_EOL;
+	ksort($memberLines, SORT_STRING);
+
+	foreach($memberLines as $line){
+		$lines[] = $line;
+	}
+	$lines[] = " */";
+	return implode("\n", $lines);
+}
+
+function processFile(string $file) : void{
 	$contents = file_get_contents($file);
 	if($contents === false){
 		throw new \RuntimeException("Failed to get contents of $file");
 	}
 
-	if(preg_match("/^namespace (.+);$/m", $contents, $matches) !== 1 || preg_match('/^((final|abstract)\s+)?class /m', $contents) !== 1){
-		echo 'Exit 0'.PHP_EOL;
-		continue;
+	if(preg_match("/(*ANYCRLF)^namespace (.+);$/m", $contents, $matches) !== 1 || preg_match('/(*ANYCRLF)^((final|abstract)\s+)?class /m', $contents) !== 1){
+		return;
 	}
 	$shortClassName = basename($file, ".php");
 	$className = $matches[1] . "\\" . $shortClassName;
-	echo $className.PHP_EOL;
 	if(!class_exists($className)){
-		echo 'Exit ~1'.PHP_EOL;
-		if(strpos($className, 'FlagUtil') !== false)
-			continue;
-		if(strpos($className, 'ConfigKeys') !== false)
-			continue;
-		if(strpos($className, 'AbstractContextSet') !== false)
-			continue;
-		if(strpos($className, 'ImmutableContextSetImpl') !== false)
-			continue;
-		if(strpos($className, 'QueryOptionsBuilderImpl') !== false)
-			continue;
-		if(strpos($className, 'QueryOptionsImpl') !== false)
-			continue;
-		if(strpos($className, 'SimpleMetaValueSelector') !== false)
-			continue;
-		if(strpos($className, 'DepthFirstIterator') !== false)
-			continue;
-		if(strpos($className, 'MetaStackDefinition') !== false)
-			continue;
-		if(strpos($className, 'AllParentsByWeight') !== false)
-			continue;
-		if(strpos($className, 'ParentsByWeight') !== false)
-			continue;
-		if(strpos($className, 'ParentsByWeight') !== false)
-			continue;
-		require $file;
-
-		if(!class_exists($className)){
-			echo 'Exit 1'.PHP_EOL;
-			continue;
-		}
+		return;
 	}
 	$reflect = new \ReflectionClass($className);
 	$docComment = $reflect->getDocComment();
-	if($docComment === false || (preg_match("/^\s*\*\s*\@see .+::_generateMethodAnnotations\(\)$/m", $docComment) !== 1 && preg_match("/^\s*\*\s*@generate-registry-docblock$/m", $docComment) !== 1)){
-		echo 'Exit 2'.PHP_EOL;
-		continue;
+	if($docComment === false || preg_match("/(*ANYCRLF)^\s*\*\s*@generate-registry-docblock$/m", $docComment) !== 1){
+		return;
 	}
 	echo "Found registry in $file\n";
 
-	$replacement = RegistryUtils::_generateMethodAnnotations($matches[1], $className::getAll());
+	$replacement = generateMethodAnnotations($matches[1], $className::getAll());
 
 	$newContents = str_replace($docComment, $replacement, $contents);
 	if($newContents !== $contents){
@@ -99,4 +114,19 @@ foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($argv[1],
 		echo "No changes made to file $file\n";
 	}
 }
+require dirname(__DIR__) . '/../../vendor/autoload.php';
+require dirname(__DIR__) . '/../../src/CoreConstants.php';
+require dirname(__DIR__) . "/vendor/autoload.php";
 
+if(is_dir($argv[1])){
+	/** @var string $file */
+	foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($argv[1], \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::CURRENT_AS_PATHNAME)) as $file){
+		if(substr($file, -4) !== ".php"){
+			continue;
+		}
+
+		processFile($file);
+	}
+}else{
+	processFile($argv[1]);
+}
