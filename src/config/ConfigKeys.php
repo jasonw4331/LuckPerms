@@ -111,9 +111,9 @@ final class ConfigKeys{
 		self::register("apply_bukkit_child_permissions", $config->get('apply-bukkit-child-permissions', true));
 		self::register("apply_bukkit_default_permissions", $config->get('apply-bukkit-default-permissions', true));
 		self::register("apply_bukkit_attachment_permissions", $config->get('apply-bukkit-attachment-permissions', true));
-		self::register("apply_nukkit_child_permissions", $config->get('apply-nukkit-child-permissions', true));
-		self::register("apply_nukkit_default_permissions", $config->get('apply-nukkit-default-permissions', true));
-		self::register("apply_nukkit_attachment_permissions", $config->get('apply-nukkit-attachment-permissions', true));
+		self::register("apply_child_permissions", $config->get('apply-child-permissions', true));
+		self::register("apply_default_permissions", $config->get('apply-default-permissions', true));
+		self::register("apply_attachment_permissions", $config->get('apply-attachment-permissions', true));
 		self::register("apply_bungee_config_permissions", $config->get('apply-bungee-config-permissions', false));
 		self::register("apply_sponge_default_subjects", $config->get('apply-sponge-default-subjects', true));
 		self::register("inheritance_traversal_algorithm", match($config->get('inheritance-traversal-algorithm', 'depth-first-pre-order')) {
