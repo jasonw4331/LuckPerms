@@ -12,3 +12,7 @@ commands:
   luckperms:
     description: Manage permissions
     aliases: [lp, perm, perms, permission, permissions]
+    permission: luckperms.command
+permissions:
+  luckperms.command:
+    description: Manage permissions
