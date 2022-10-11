@@ -5,12 +5,7 @@ namespace jasonwynn10\LuckPerms\graph;
 use pocketmine\utils\EnumTrait;
 
 /**
- * This doc-block is generated automatically, do not modify it manually.
- * This must be regenerated whenever registry members are added, removed or changed.
- * @see \pocketmine\utils\RegistryUtils::_generateMethodAnnotations()
- *
- * @method static Order POST_ORDER()
- * @method static Order PRE_ORDER()
+ * @generate-registry-docblock
  */
 final class Order{
 	use EnumTrait {

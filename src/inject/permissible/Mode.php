@@ -5,12 +5,7 @@ namespace jasonwynn10\LuckPerms\inject\permissible;
 use pocketmine\utils\EnumTrait;
 
 /**
- * This doc-block is generated automatically, do not modify it manually.
- * This must be regenerated whenever registry members are added, removed or changed.
- * @see \pocketmine\utils\RegistryUtils::_generateMethodAnnotations()
- *
- * @method static Mode INJECT()
- * @method static Mode UNINJECT()
+ * @generate-registry-docblock
  */
 final class Mode{
 	use EnumTrait {

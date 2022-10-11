@@ -23,6 +23,7 @@ use jasonwynn10\LuckPerms\storage\misc\StorageCredentials;
 use jasonwynn10\LuckPerms\storage\StorageType;
 use pocketmine\utils\CloningRegistryTrait;
 use pocketmine\utils\Config;
+use Webmozart\PathUtil\Path;
 
 /**
  * @generate-registry-docblock
@@ -54,7 +55,7 @@ final class ConfigKeys{
 	}
 
 	protected static function setup() : void{
-		$config = new Config('.\\plugin_data'.DIRECTORY_SEPARATOR.'LuckPerms'.DIRECTORY_SEPARATOR.'config.yml');
+		$config = new Config(Path::join(\pocketmine\PATH, 'plugin_data', 'LuckPerms', 'config.yml'));
 		self::register("server", $config->get('server', 'global'));
 		self::register("sync_time", $config->get('sync-minutes', -1));
 		self::register("global_query_options", (function() use($config) : QueryOptions {

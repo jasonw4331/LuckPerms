@@ -5,15 +5,7 @@ namespace jasonwynn10\LuckPerms\locale;
 use pocketmine\utils\EnumTrait;
 
 /**
- * This doc-block is generated automatically, do not modify it manually.
- * This must be regenerated whenever registry members are added, removed or changed.
- * @see \pocketmine\utils\RegistryUtils::_generateMethodAnnotations()
- *
- * @method static Locale BUBBLE()
- * @method static Locale EN_US()
- * @method static Locale FALLBACK()
- * @method static Locale FIRE()
- * @method static Locale HORN()
+ * @generate-registry-docblock
  */
 final class Locale{
 	use EnumTrait {
