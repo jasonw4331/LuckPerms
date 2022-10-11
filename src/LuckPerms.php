@@ -12,8 +12,6 @@ use jasonwynn10\LuckPerms\config\LuckPermsConfiguration;
 use jasonwynn10\LuckPerms\context\ConfigurationContextCalculator;
 use jasonwynn10\LuckPerms\context\ContextManager;
 use jasonwynn10\LuckPerms\context\PlayerCalculator;
-use jasonwynn10\LuckPerms\dependencies\Dependency;
-use jasonwynn10\LuckPerms\dependencies\DependencyManager;
 use jasonwynn10\LuckPerms\event\EventDispatcher;
 use jasonwynn10\LuckPerms\event\gen\GeneratedEventClass;
 use jasonwynn10\LuckPerms\extension\SimpleExtensionManager;
@@ -63,7 +61,6 @@ class LuckPerms extends PluginBase{
 	private static LuckPerms $instance;
 	private static ?ConsoleCommandSender $consoleCommandSender = null;
 
-	private DependencyManager $dependencyManager;
     private TranslationManager $translationManager;
 
 	private VerboseHandler $verboseHandler;
@@ -100,11 +97,10 @@ class LuckPerms extends PluginBase{
 	public function onLoad() : void {
 		self::$instance = $this;
 
-		foreach($this->getServer()->getBroadcastChannelSubscribers(Server::BROADCAST_CHANNEL_ADMINISTRATIVE) as $sender)
+		foreach($this->getServer()->getBroadcastChannelSubscribers(Server::BROADCAST_CHANNEL_ADMINISTRATIVE) as $sender) {
+			/** @noinspection PhpFieldAssignmentTypeMismatchInspection */
 			self::$consoleCommandSender = $sender; // we know there is only 1 broadcast subscriber at this point: The console.
-
-		$this->dependencyManager = new DependencyManager($this);
-		$this->dependencyManager->loadDependencies($this->getGlobalDependencies());
+		}
 
 		$this->translationManager = new TranslationManager($this);
 		$this->translationManager->reload();
@@ -309,17 +305,6 @@ class LuckPerms extends PluginBase{
 		$this->getLogger()->debug('Goodbye!');
 	}
 
-	protected function getGlobalDependencies() : array {
-		return [
-			Dependency::ADVENTURE(),
-			Dependency::CAFFEINE(),
-			Dependency::OKIO(),
-			Dependency::OKHTTP(),
-			Dependency::BYTEBUDDY(),
-			Dependency::EVENT()
-		];
-	}
-
 	public function setMessagingService(InternalMessagingService $messagingService) {
 		if($this->messagingService === null)
 			$this->messagingService = $messagingService;
@@ -365,10 +350,6 @@ class LuckPerms extends PluginBase{
 
 		return $this->getEventDispatcher()->dispatchUsernameValidityCheck($username, $valid);
 	}
-
-	public function getDependencyManager() : DependencyManager {
-        return $this->dependencyManager;
-    }
 
     public function getTranslationManager() : TranslationManager {
         return $this->translationManager;
