@@ -60,12 +60,12 @@ function generateMethodAnnotations(string $namespaceName, array $members) : stri
 	static $lineTmpl = " * @method static %2\$s %s()";
 	$memberLines = [];
 	foreach($members as $name => $member){
-		$reflect = new \ReflectionClass($member);
+		$reflect = is_object($member) ? new \ReflectionClass($member) : false;
 		while($reflect !== false && $reflect->isAnonymous()){
 			$reflect = $reflect->getParentClass();
 		}
 		if($reflect === false){
-			$typehint = "object";
+			$typehint = \get_debug_type($member);
 		}elseif($reflect->getNamespaceName() === $namespaceName){
 			$typehint = $reflect->getShortName();
 		}else{
