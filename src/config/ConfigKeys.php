@@ -3,44 +3,111 @@ declare(strict_types=1);
 namespace jasonwynn10\LuckPerms\config;
 
 use jasonwynn10\LuckPerms\api\context\ContextSatisfyMode;
-use jasonwynn10\LuckPerms\api\metastacking\DuplicateRemovalFunction;
-use jasonwynn10\LuckPerms\api\metastacking\MetaStackDefinition;
 use jasonwynn10\LuckPerms\api\model\data\TemporaryNodeMergeStrategy;
-use jasonwynn10\LuckPerms\api\query\QueryOptions;
 use jasonwynn10\LuckPerms\cacheddata\type\SimpleMetaValueSelector;
 use jasonwynn10\LuckPerms\cacheddata\type\Strategy;
 use jasonwynn10\LuckPerms\graph\TraversalAlgorithm;
-use jasonwynn10\LuckPerms\LuckPerms;
-use jasonwynn10\LuckPerms\metastacking\SimpleMetaStackDefinition;
-use jasonwynn10\LuckPerms\metastacking\StandardStackElements;
 use jasonwynn10\LuckPerms\model\AllParentsByWeight;
 use jasonwynn10\LuckPerms\model\ParentsByWeight;
 use jasonwynn10\LuckPerms\model\Stored;
-use jasonwynn10\LuckPerms\query\Flag;
-use jasonwynn10\LuckPerms\query\QueryMode;
-use jasonwynn10\LuckPerms\query\QueryOptionsBuilderImpl;
 use jasonwynn10\LuckPerms\storage\misc\StorageCredentials;
 use jasonwynn10\LuckPerms\storage\StorageType;
-use pocketmine\utils\CloningRegistryTrait;
+use jasonwynn10\LuckPerms\util\traits\ExtraRegistryTrait;
 use pocketmine\utils\Config;
 use Webmozart\PathUtil\Path;
 
 /**
+ * This doc-block is generated automatically, do not modify it manually.
+ * This must be regenerated whenever registry members are added, removed or changed.
+ * @see build/generate-registry-annotations.php
  * @generate-registry-docblock
+ *
+ * @method static bool ALLOW_INVALID_USERNAMES()
+ * @method static bool APPLYING_REGEX()
+ * @method static bool APPLYING_SHORTHAND()
+ * @method static bool APPLYING_WILDCARDS()
+ * @method static bool APPLYING_WILDCARDS_SPONGE()
+ * @method static bool APPLY_ATTACHMENT_PERMISSIONS()
+ * @method static bool APPLY_BUKKIT_ATTACHMENT_PERMISSIONS()
+ * @method static bool APPLY_BUKKIT_CHILD_PERMISSIONS()
+ * @method static bool APPLY_BUKKIT_DEFAULT_PERMISSIONS()
+ * @method static bool APPLY_BUNGEE_CONFIG_PERMISSIONS()
+ * @method static bool APPLY_CHILD_PERMISSIONS()
+ * @method static bool APPLY_DEFAULT_NEGATIONS_BEFORE_WILDCARDS()
+ * @method static bool APPLY_DEFAULT_PERMISSIONS()
+ * @method static bool APPLY_SPONGE_DEFAULT_SUBJECTS()
+ * @method static bool AUTO_INSTALL_TRANSLATIONS()
+ * @method static bool AUTO_OP()
+ * @method static bool AUTO_PUSH_UPDATES()
+ * @method static bool BROADCAST_RECEIVED_LOG_ENTRIES()
+ * @method static string BYTEBIN_URL()
+ * @method static bool CANCEL_FAILED_LOGINS()
+ * @method static bool COMMANDS_ALLOW_OP()
+ * @method static \jasonwynn10\LuckPerms\api\context\ContextSatisfyMode CONTEXT_SATISFY_MODE()
+ * @method static \jasonwynn10\LuckPerms\storage\misc\StorageCredentials DATABASE_VALUES()
+ * @method static bool DEBUG_LOGINS()
+ * @method static bool FABRIC_INTEGRATED_SERVER_OWNER_BYPASSS_CHECKS()
+ * @method static array GROUP_NAME_REWRITES()
+ * @method static array GROUP_WEIGHTS()
+ * @method static \jasonwynn10\LuckPerms\graph\TraversalAlgorithm INHERITANCE_TRAVERSAL_ALGORITHM()
+ * @method static bool LOG_NOTIFY()
+ * @method static array LOG_NOTIFY_FILTERED_DESCRIPTIONS()
+ * @method static string MESSAGING_SERVICE()
+ * @method static \jasonwynn10\LuckPerms\cacheddata\type\SimpleMetaValueSelector META_VALUE_SELECTOR()
+ * @method static string MONGODB_COLLECTION_PREFIX()
+ * @method static string MONGODB_CONNECTION_URI()
+ * @method static bool OPS_ENABLED()
+ * @method static bool POST_TRAVERSAL_INHERITANCE_SORT()
+ * @method static bool PREVENT_PRIMARY_GROUP_REMOVAL()
+ * @method static \jasonwynn10\LuckPerms\model\ParentsByWeight PRIMARY_GROUP_CALCULATION()
+ * @method static string PRIMARY_GROUP_CALCULATION_METHOD()
+ * @method static bool PUSH_LOG_ENTRIES()
+ * @method static string RABBITMQ_ADDRESS()
+ * @method static bool RABBITMQ_ENABLED()
+ * @method static string RABBITMQ_PASSWORD()
+ * @method static string RABBITMQ_USERNAME()
+ * @method static string RABBITMQ_VIRTUAL_HOST()
+ * @method static null REDIS_ADDRESS()
+ * @method static bool REDIS_ENABLED()
+ * @method static string REDIS_PASSWORD()
+ * @method static bool REDIS_SSL()
+ * @method static bool REGISTER_COMMAND_LIST_DATA()
+ * @method static bool REQUIRE_SENDER_GROUP_MEMBERSHIP_TO_MODIFY()
+ * @method static bool RESOLVE_COMMAND_SELECTORS()
+ * @method static string SERVER()
+ * @method static bool SKIP_BULKUPDATE_CONFIRMATION()
+ * @method static bool SPLIT_STORAGE()
+ * @method static array SPLIT_STORAGE_OPTIONS()
+ * @method static string SQL_TABLE_PREFIX()
+ * @method static \jasonwynn10\LuckPerms\storage\StorageType STORAGE_METHOD()
+ * @method static int SYNC_TIME()
+ * @method static \jasonwynn10\LuckPerms\api\model\data\TemporaryNodeMergeStrategy TEMPORARY_ADD_BEHAVIOUR()
+ * @method static string TREE_VIEWER_URL_PATTERN()
+ * @method static bool UPDATE_CLIENT_COMMAND_LIST()
+ * @method static bool USE_ARGUMENT_BASED_COMMAND_PERMISSIONS()
+ * @method static bool USE_SERVER_UUID_CACHE()
+ * @method static bool USE_VAULT_SERVER()
+ * @method static bool VAULT_GROUP_USE_DISPLAYNAMES()
+ * @method static bool VAULT_IGNORE_WORLD()
+ * @method static bool VAULT_INCLUDING_GLOBAL()
+ * @method static string VAULT_NPC_GROUPS()
+ * @method static bool VAULT_NPC_OP_STATUS()
+ * @method static string VAULT_SERVER()
+ * @method static bool VAULT_UNSAFE_LOOKUPS()
+ * @method static string VERBOSE_VIEWER_URL_PATTERN()
+ * @method static bool WATCH_FILES()
+ * @method static string WEB_EDITOR_URL_PATTERN()
+ * @method static array WORLD_REWRITES()
  */
 final class ConfigKeys{
-	use CloningRegistryTrait;
+	use ExtraRegistryTrait;
 
 	private function __construct(){
 		//NOOP
 	}
 
-	/**
-	 * @param string $name
-	 * @param mixed  $member
-	 */
-	protected static function register(string $name, $member) : void{
-		self::_registryRegister($name, (object) $member);
+	protected static function register(string $name, mixed $member) : void{
+		self::_registryRegister($name, $member);
 	}
 
 	public static function getAll() : array{
@@ -48,10 +115,6 @@ final class ConfigKeys{
 		/** @var mixed[] $result */
 		$result = self::_registryGetAll();
 		return $result;
-	}
-
-	protected static function preprocessMember(object $member) : object{
-		return $member->scalar;
 	}
 
 	protected static function setup() : void{
