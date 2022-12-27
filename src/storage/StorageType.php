@@ -2,9 +2,11 @@
 declare(strict_types=1);
 namespace jasonwynn10\LuckPerms\storage;
 
-use jasonwynn10\LuckPerms\LuckPerms;
 use pocketmine\utils\EnumTrait;
 
+/**
+ * @generate-registry-docblock
+ */
 final class StorageType{
 	use EnumTrait {
 		__construct as Enum___construct;
@@ -24,7 +26,7 @@ final class StorageType{
 			new self("MARIADB", "MariaDB", "mariadb"),
 			new self("MYSQL", "MySQL", "mysql"),
 			new self("POSTGRESQL", "PostgreSQL", "postgresql"),
-			new self("POSTGRESQL", "SQLite", "sqlite"),
+			new self("SQLITE", "SQLite", "sqlite"),
 			new self("CUSTOM", "Custom", "custom"),
 		);
 	}
