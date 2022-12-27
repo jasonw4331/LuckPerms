@@ -9,7 +9,7 @@ use Ramsey\Collection\Map\AbstractTypedMap;
 interface ConfigurationAdapter{
 	public function getPlugin() : LuckPerms;
 	public function reload() : void;
-	public function getString(string $path, String $def) : string;
+	public function getString(string $path, ?string $def) : string;
 	public function getInteger(string $path, int $def) : int;
 	public function getBoolean(string $path, bool $def) : bool;
 	/**

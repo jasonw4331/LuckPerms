@@ -68,11 +68,11 @@ class ConfigKeyFactory{
 
 	/**
 	 * @param string $path
-	 * @param string $def
+	 * @param string|null $def
 	 *
 	 * @return SimpleConfigKey<string>
 	 */
-	public static function stringKey(string $path, string $def) : SimpleConfigKey {
+	public static function stringKey(string $path, ?string $def) : SimpleConfigKey {
 		return self::key(new Bound(self::STRING(), $path, $def));
 	}
 
