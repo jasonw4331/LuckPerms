@@ -23,15 +23,17 @@ declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\util\traits;
 
-use function array_map;
 use function count;
 use function mb_strtoupper;
 use function preg_match;
 
-trait ExtraRegistryTrait{
+/**
+ * @template T
+ */
+trait MixedRegistryTrait{
 	/**
-	 * @var mixed[]
-	 * @phpstan-var array<string, mixed>
+	 * @var T[]
+	 * @phpstan-var array<string, T>
 	 */
 	private static $members = null;
 
@@ -44,11 +46,14 @@ trait ExtraRegistryTrait{
 	/**
 	 * Adds the given object to the registry.
 	 *
+	 * @param string $name
+	 * @param T $member
+	 *
 	 * @throws \InvalidArgumentException
 	 */
 	private static function _registryRegister(string $name, mixed $member) : void{
 		self::verifyName($name);
-		$upperName = \mb_strtoupper($name);
+		$upperName = mb_strtoupper($name);
 		if(isset(self::$members[$upperName])){
 			throw new \InvalidArgumentException("\"$upperName\" is already reserved");
 		}
@@ -75,19 +80,16 @@ trait ExtraRegistryTrait{
 	}
 
 	/**
+	 * @return T
 	 * @throws \InvalidArgumentException
 	 */
-	private static function _registryFromString(string $name) : object{
+	private static function _registryFromString(string $name) : mixed{
 		self::checkInit();
 		$upperName = mb_strtoupper($name);
 		if(!isset(self::$members[$upperName])){
 			throw new \InvalidArgumentException("No such registry member: " . self::class . "::" . $upperName);
 		}
-		return self::preprocessMember(self::$members[$upperName]);
-	}
-
-	protected static function preprocessMember(mixed $member) : mixed{
-		return $member;
+		return self::$members[$upperName];
 	}
 
 	/**
@@ -95,7 +97,7 @@ trait ExtraRegistryTrait{
 	 * @param mixed[] $arguments
 	 * @phpstan-param list<mixed> $arguments
 	 *
-	 * @return object
+	 * @return T
 	 */
 	public static function __callStatic($name, $arguments){
 		if(count($arguments) > 0){
@@ -109,13 +111,11 @@ trait ExtraRegistryTrait{
 	}
 
 	/**
-	 * @return mixed[]
-	 * @phpstan-return array<string, mixed>
+	 * @return T[]
+	 * @phpstan-return array<string, T>
 	 */
 	private static function _registryGetAll() : array{
 		self::checkInit();
-		return array_map(function(mixed $o) : mixed{
-			return self::preprocessMember($o);
-		}, self::$members);
+		return self::$members;
 	}
 }
