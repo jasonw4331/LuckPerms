@@ -55,6 +55,6 @@ abstract class Strategy{
 
 	public static function parse(string $s) : ?self {
 		$func_name = strtoupper(str_replace('-', '_', $s));
-		return self::$$func_name(); // TODO: return dynamic function
+		return self::$func_name(); // TODO: return dynamic function
 	}
 }
