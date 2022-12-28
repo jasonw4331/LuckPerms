@@ -2,23 +2,25 @@
 declare(strict_types=1);
 namespace jasonwynn10\LuckPerms\query;
 
-use pocketmine\utils\CloningRegistryTrait;
+use jasonwynn10\LuckPerms\util\traits\MixedRegistryTrait;
+use Ramsey\Collection\Set;
 
 /**
  * This doc-block is generated automatically, do not modify it manually.
  * This must be regenerated whenever registry members are added, removed or changed.
- * @see \pocketmine\utils\RegistryUtils::_generateMethodAnnotations()
+ * @see build/generate-registry-annotations.php
+ * @generate-registry-docblock
  *
  * @method static int ALL_FLAGS()
- * @method static Flag[] ALL_FLAGS_SET()
+ * @method static Set ALL_FLAGS_SET()
  * @method static int ALL_FLAGS_SIZE()
  */
 final class FlagUtils{
-	use CloningRegistryTrait;
+	use MixedRegistryTrait;
 	private function __construct(){}
 
-	protected static function register(string $name, $member) : void {
-		self::_registryRegister($name, (object) $member);
+	protected static function register(string $name, mixed $member) : void {
+		self::_registryRegister($name, $member);
 	}
 
 	/**
@@ -32,9 +34,9 @@ final class FlagUtils{
 	}
 
 	protected static function setup() : void {
-		self::register("ALL_FLAGS_SET", Flag::getAll());
-		self::register("ALL_FLAGS_SIZE", count(Flag::getAll()));
-		self::register("ALL_FLAGS", self::toByte0(Flag::getAll()));
+		self::register("ALL_FLAGS_SET", new Set(Flag::class, Flag::getAll()));
+		self::register("ALL_FLAGS_SIZE", self::ALL_FLAGS_SET()->count());
+		self::register("ALL_FLAGS", self::toByte0(self::ALL_FLAGS_SET()));
 	}
 
 	public static function read(int $b, Flag $setting) : bool {
@@ -42,23 +44,23 @@ final class FlagUtils{
 	}
 
 	/**
-	 * @param Flag[] $settings
+	 * @param Set<Flag> $settings
 	 *
 	 * @return int
 	 */
-	public static function toByte(array $settings) : int {
-		if(count($settings) === self::ALL_FLAGS_SIZE()) {
+	public static function toByte(Set $settings) : int {
+		if($settings->count() === self::ALL_FLAGS_SIZE()) {
 			return self::ALL_FLAGS();
 		}
 		return self::toByte0($settings);
 	}
 
 	/**
-	 * @param Flag[] $settings
+	 * @param Set<Flag> $settings
 	 *
 	 * @return int
 	 */
-	private static function toByte0(array $settings) : int {
+	private static function toByte0(Set $settings) : int {
 		$b = 0;
 		foreach($settings as $setting) {
 			$b |= 1 << $setting->ordinal();
@@ -66,11 +68,11 @@ final class FlagUtils{
 		return $b;
 	}
 
-	public static function toSet(int $b) : array {
-		$settings = Flag::getAll();
+	public static function toSet(int $b) : Set {
+		$settings = new Set(Flag::class, Flag::getAll());
 		foreach($settings as $setting) {
 			if(self::read($b, $setting)) {
-				$settings[] = $setting;
+				$settings->add($setting);
 			}
 		}
 		return $settings;
