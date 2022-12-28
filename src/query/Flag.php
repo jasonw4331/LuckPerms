@@ -17,9 +17,7 @@ use pocketmine\utils\EnumTrait;
  * @method static Flag RESOLVE_INHERITANCE()
  */
 final class Flag{
-	use EnumTrait {
-		__construct as Enum___construct;
-	}
+	use EnumTrait;
 
 	protected static function setup() : void {
 		self::registerAll(
@@ -31,11 +29,7 @@ final class Flag{
 		);
 	}
 
-	private function __construct(string $name) {
-		$this->Enum___construct($name);
-	}
-
 	public function ordinal() : int {
-		return 0;
+		return ($key = array_search($this, self::getAll(), true)) === false ? -1 : $key;
 	}
 }
