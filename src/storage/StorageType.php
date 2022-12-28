@@ -5,7 +5,23 @@ namespace jasonwynn10\LuckPerms\storage;
 use pocketmine\utils\EnumTrait;
 
 /**
+ * This doc-block is generated automatically, do not modify it manually.
+ * This must be regenerated whenever registry members are added, removed or changed.
+ * @see build/generate-registry-annotations.php
  * @generate-registry-docblock
+ *
+ * @method static StorageType CUSTOM()
+ * @method static StorageType JSON()
+ * @method static StorageType JSON_COMBINED()
+ * @method static StorageType MARIADB()
+ * @method static StorageType MONGODB()
+ * @method static StorageType MYSQL()
+ * @method static StorageType POSTGRESQL()
+ * @method static StorageType SQLITE()
+ * @method static StorageType TOML()
+ * @method static StorageType TOML_COMBINED()
+ * @method static StorageType YAML()
+ * @method static StorageType YAML_COMBINED()
  */
 final class StorageType{
 	use EnumTrait {
