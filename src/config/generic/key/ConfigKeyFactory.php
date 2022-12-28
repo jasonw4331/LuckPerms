@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace jasonwynn10\LuckPerms\config\generic\key;
 
 use jasonwynn10\LuckPerms\config\generic\adapter\ConfigurationAdapter;
-use jasonwynn10\LuckPerms\util\traits\ExtraRegistryTrait;
+use pocketmine\utils\EnumTrait;
 use Ramsey\Collection\Map\AbstractTypedMap;
 
 /**
@@ -14,38 +14,34 @@ use Ramsey\Collection\Map\AbstractTypedMap;
  * This must be regenerated whenever registry members are added, removed or changed.
  * @see build/generate-registry-annotations.php
  * @generate-registry-docblock
- * @method static callable BOOLEAN()
- * @method static callable STRING()
- * @method static callable LOWERCASE_STRING()
- * @method static callable STRING_MAP()
+ *
+ * @method static ConfigKeyFactory BOOLEAN()
+ * @method static ConfigKeyFactory LOWERCASE_STRING()
+ * @method static ConfigKeyFactory STRING()
+ * @method static ConfigKeyFactory STRING_MAP()
  */
 class ConfigKeyFactory{
-	use ExtraRegistryTrait{
-		_registryRegister as register;
+	use EnumTrait {
+		__construct as Enum___construct;
 	}
 
-	private function __construct(){
-		//NOOP
-	}
-
-	public static function getAll() : array{
-		//phpstan doesn't support generic traits yet :(
-		/** @var callable[] $result */
-		$result = self::_registryGetAll();
-		return $result;
+	private function __construct(string $name, private string $functionName){
+		$this->Enum___construct($name);
 	}
 
 	protected static function setup() : void{
-		self::register("boolean", [ConfigurationAdapter::class, "getBoolean"]);
-		self::register("string", [ConfigurationAdapter::class, "getString"]);
-		self::register("lowercase_string", static fn(ConfigurationAdapter $adapter, string $path, string $def) => mb_strtolower($adapter->getString($path, $def)));
-		self::register("string_map", static fn(ConfigurationAdapter $config, string $path, AbstractTypedMap $def) => clone $config->getStringMap($path, $def));
+		self::registerAll(
+			new self("boolean", "getBoolean"),
+			new self("string", "getString"),
+			new self("lowercase_string", "getLowercaseString"),
+			new self("string_map", "getStringMap"),
+		);
 	}
 
 	/**
 	 * @param callable(ConfigurationAdapter):T $function
 	 *
-	 * @return SimpleConfigKey
+	 * @return SimpleConfigKey<T>
 	 */
 	public static function key(callable $function) : SimpleConfigKey {
 		return new SimpleConfigKey($function);
@@ -93,5 +89,12 @@ class ConfigKeyFactory{
 	 */
 	public static function mapKey(string $path) : SimpleConfigKey {
 		return self::key(new Bound(self::STRING_MAP(), $path, null));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFunctionName() : string{
+		return $this->functionName;
 	}
 }
