@@ -3,13 +3,15 @@ declare(strict_types=1);
 namespace jasonwynn10\LuckPerms\query;
 
 use jasonwynn10\LuckPerms\api\query\QueryOptions;
-use jasonwynn10\LuckPerms\context\contextset\ImmutableContextSetImpl;
+use jasonwynn10\LuckPerms\context\ImmutableContextSet;
+use jasonwynn10\LuckPerms\context\ImmutableContextSetImpl;
+use Ramsey\Collection\Set;
 
-class QueryOptionsBuilderImpl implements Builder {
+class QueryOptionsBuilderImpl implements Builder{
 	private QueryMode $mode;
-	private ?array $context;
+	private ImmutableContextSet $context;
 	private int $flags;
-	private ?array $flagsSet;
+	private ?Set $flagsSet;
 	private ?array $options;
 	private bool $copyOptions;
 
@@ -40,7 +42,7 @@ class QueryOptionsBuilderImpl implements Builder {
 		if($this->flagsSet === null) {
 			$this->flagsSet = FlagUtils::toSet($this->flags);
 		}
-		if($value) {
+		if($value){
 			$this->flagsSet->add($flag);
 		}else{
 			$this->flagsSet->remove($flag);
@@ -49,16 +51,21 @@ class QueryOptionsBuilderImpl implements Builder {
 		return $this;
 	}
 
-	public function flags(array $flags) : Builder {
+	/**
+	 * @param Set<Flag> $flags
+	 *
+	 * @return Builder
+	 */
+	public function flags(Set $flags) : Builder{
 		foreach($flags as $flag)
-			assert($flag instanceof Flag);
+			\assert($flag instanceof Flag);
 		$this->flagsSet = $flags;
 		return $this;
 	}
 
-	public function option($key, $value) : Builder {
-		if($this->options === null or $this->copyOptions) {
-			if($this->options === null) {
+	public function option($key, $value) : Builder{
+		if($this->options === null or $this->copyOptions){
+			if($this->options === null){
 				$this->options = [];
 			}
 			$this->copyOptions = false;
@@ -69,7 +76,7 @@ class QueryOptionsBuilderImpl implements Builder {
 			$this->options[$key] = $value;
 		}
 
-		if(count($this->options) < 1) {
+		if(\count($this->options) < 1){
 			$this->options = null;
 		}
 
