@@ -15,6 +15,7 @@ use jasonwynn10\LuckPerms\context\PlayerCalculator;
 use jasonwynn10\LuckPerms\event\EventDispatcher;
 use jasonwynn10\LuckPerms\event\gen\GeneratedEventClass;
 use jasonwynn10\LuckPerms\extension\SimpleExtensionManager;
+use jasonwynn10\LuckPerms\http\BytebinClient;
 use jasonwynn10\LuckPerms\inheritance\InheritanceGraphFactory;
 use jasonwynn10\LuckPerms\inject\permissible\LuckPermsPermissible;
 use jasonwynn10\LuckPerms\inject\permissible\Mode;
@@ -55,10 +56,15 @@ use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
+use pocketmine\utils\SingletonTrait;
 use Ramsey\Uuid\Uuid;
 
 class LuckPerms extends PluginBase{
-	private static LuckPerms $instance;
+	use SingletonTrait {
+		setInstance as private _setInstance;
+		reset as private _reset;
+	}
+
 	private static ?ConsoleCommandSender $consoleCommandSender = null;
 
     private TranslationManager $translationManager;
@@ -89,10 +95,6 @@ class LuckPerms extends PluginBase{
     private LuckPermsSubscriptionMap $subscriptionMap;
     private LuckPermsPermissionMap $permissionMap;
     private LuckPermsDefaultsMap $defaultPermissionMap;
-
-	public static function getInstance() : LuckPerms{
-		return self::$instance;
-	}
 
 	public function onLoad() : void {
 		self::$instance = $this;
