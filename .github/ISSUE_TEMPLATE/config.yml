@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 💬 ​ Ask a question
-    url: https://discord.gg/luckperms
-    about: We use Discord to provide support for the project. If you have a question, need help, or aren't sure if you've found a bug or not, please come and talk to us there!
+  - name: Help & support on Discord
+    url: https://discord.gg/R7kdetE
+    about: We don't accept support requests on the issue tracker. Please try asking on Discord instead.
+  - name: Help & support on forums
+    url: https://forums.pmmp.io
+    about: We don't accept support requests on the issue tracker. Please try asking on forums instead.
