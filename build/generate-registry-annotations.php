@@ -30,8 +30,10 @@ use function dirname;
 use function file_get_contents;
 use function file_put_contents;
 use function fwrite;
+use function get_debug_type;
 use function implode;
 use function is_dir;
+use function is_object;
 use function ksort;
 use function mb_strtoupper;
 use function preg_match;
@@ -39,6 +41,7 @@ use function sprintf;
 use function str_replace;
 use function substr;
 use const SORT_STRING;
+use const STDERR;
 
 if(count($argv) !== 2){
 	fwrite(STDERR, "Provide a path to process\n");
@@ -65,7 +68,7 @@ function generateMethodAnnotations(string $namespaceName, array $members) : stri
 			$reflect = $reflect->getParentClass();
 		}
 		if($reflect === false){
-			$typehint = \get_debug_type($member);
+			$typehint = get_debug_type($member);
 		}elseif($reflect->getNamespaceName() === $namespaceName){
 			$typehint = $reflect->getShortName();
 		}else{
