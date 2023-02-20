@@ -9,7 +9,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"jasonwynn10\\LuckPerms\\": "../src"
+			"jasonwynn10\\LuckPerms\\": "../../src"
 		}
 	},
 	"config": {
