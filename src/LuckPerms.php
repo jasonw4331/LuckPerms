@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms;
 
 use jasonwynn10\LuckPerms\actionlog\LogDispatcher;
@@ -67,39 +70,39 @@ class LuckPerms extends PluginBase{
 
 	private static ?ConsoleCommandSender $consoleCommandSender = null;
 
-    private TranslationManager $translationManager;
+	private TranslationManager $translationManager;
 
 	private VerboseHandler $verboseHandler;
-    private PermissionRegistry $permissionRegistry;
-    private LogDispatcher $logDispatcher;
-    private LuckPermsConfiguration $configuration;
-    private BytebinClient $bytebin;
-    private TranslationRepository $translationRepository;
-    private ?FileWatcher $fileWatcher = null;
-    private Storage $storage;
-    private ?InternalMessagingService $messagingService = null;
-    private Buffer $syncTaskBuffer;
-    private InheritanceGraphFactory $inheritanceGraphFactory;
-    private CalculatorFactory $calculatorFactory;
-    private LuckPermsApiProvider $apiProvider;
-    private EventDispatcher $eventDispatcher;
-    private SimpleExtensionManager $extensionManager;
+	private PermissionRegistry $permissionRegistry;
+	private LogDispatcher $logDispatcher;
+	private LuckPermsConfiguration $configuration;
+	private BytebinClient $bytebin;
+	private TranslationRepository $translationRepository;
+	private ?FileWatcher $fileWatcher = null;
+	private Storage $storage;
+	private ?InternalMessagingService $messagingService = null;
+	private Buffer $syncTaskBuffer;
+	private InheritanceGraphFactory $inheritanceGraphFactory;
+	private CalculatorFactory $calculatorFactory;
+	private LuckPermsApiProvider $apiProvider;
+	private EventDispatcher $eventDispatcher;
+	private SimpleExtensionManager $extensionManager;
 
 	private SenderFactory $senderFactory;
 	private AbstractConnectionListener $connectionListener;
 	private LuckPermsCommandExecutor $commandManager;
 	private StandardUserManager $userManager;
-    private StandardGroupManager $groupManager;
-    private StandardTrackManager $trackManager;
-    private ContextManager $contextManager;
-    private LuckPermsSubscriptionMap $subscriptionMap;
-    private LuckPermsPermissionMap $permissionMap;
-    private LuckPermsDefaultsMap $defaultPermissionMap;
+	private StandardGroupManager $groupManager;
+	private StandardTrackManager $trackManager;
+	private ContextManager $contextManager;
+	private LuckPermsSubscriptionMap $subscriptionMap;
+	private LuckPermsPermissionMap $permissionMap;
+	private LuckPermsDefaultsMap $defaultPermissionMap;
 
-	public function onLoad() : void {
+	public function onLoad() : void{
 		self::$instance = $this;
 
-		foreach($this->getServer()->getBroadcastChannelSubscribers(Server::BROADCAST_CHANNEL_ADMINISTRATIVE) as $sender) {
+		foreach($this->getServer()->getBroadcastChannelSubscribers(Server::BROADCAST_CHANNEL_ADMINISTRATIVE) as $sender){
 			/** @noinspection PhpFieldAssignmentTypeMismatchInspection */
 			self::$consoleCommandSender = $sender; // we know there is only 1 broadcast subscriber at this point: The console.
 		}
@@ -108,7 +111,7 @@ class LuckPerms extends PluginBase{
 		$this->translationManager->reload();
 	}
 
-	public function onEnable() : void {
+	public function onEnable() : void{
 		$this->senderFactory = new SenderFactory($this);
 
 		$this->verboseHandler = new VerboseHandler($this->getScheduler());
@@ -116,7 +119,11 @@ class LuckPerms extends PluginBase{
 		$this->logDispatcher = new LogDispatcher($this);
 
 		$this->getLogger()->debug("Loading configuration...");
-		$this->configuration = new LuckPermsConfiguration($this, $this->getConfig());
+		$this->configuration = new LuckPermsConfiguration($this, new MultiConfigurationAdapter(
+			new SystemPropertyConfigAdapter($this),
+			new EnvironmentVariableConfigAdapter($this),
+			new ConfigAdapter($this, $this->getDataFolder() . "config.yml")
+		));
 
 		$httpClient = OkHttpClient::builder()->callTimeout(15)->build();
 
@@ -126,18 +133,16 @@ class LuckPerms extends PluginBase{
 		$this->translationRepository->scheduleRefresh();
 
 		$storageFactory = new StorageFactory($this);
-		$storageTypes = $storageFactory->getRequiredTypes();
-		$this->dependencyManager->loadStorageDependencies($storageTypes);
 
 		$this->connectionListener = new ConnectionListener($this);
 		$this->getServer()->getPluginManager()->registerEvents($this->connectionListener, $this);
 		$this->getServer()->getPluginManager()->registerEvents(new PlatformListener($this), $this);
 
-		if($this->getConfiguration()->get(ConfigKeys::WATCH_FILES())) {
-			try {
+		if($this->getConfiguration()->get(ConfigKeys::WATCH_FILES())){
+			try{
 				$this->fileWatcher = new FileWatcher($this, $this->getDataFolder());
-			}catch(\Throwable $e) {
-				$this->getLogger()->warning("Error occurred whilst trying to create a file watcher: ".$e->getMessage());
+			}catch(\Throwable $e){
+				$this->getLogger()->warning("Error occurred whilst trying to create a file watcher: " . $e->getMessage());
 			}
 		}
 
@@ -173,7 +178,7 @@ class LuckPerms extends PluginBase{
 			new InjectorDefaultsMap($this),
 			new PermissibleMonitoringInjector($this, Mode::INJECT()),
 		];
-		foreach($injectors as $injector) {
+		foreach($injectors as $injector){
 			$injector->run();
 
 			$this->getScheduler()->scheduleDelayedTask($injector, 1);
@@ -181,26 +186,26 @@ class LuckPerms extends PluginBase{
 
 		$this->apiProvider = new LuckPermsApiProvider($this);
 		$this->eventDispatcher = new EventDispatcher(new EventBus($this, $this->apiProvider));
-		$this->getScheduler()->scheduleTask(new ClosureTask(function() {
+		$this->getScheduler()->scheduleTask(new ClosureTask(function(){
 			GeneratedEventClass::preGenerate();
 		}));
 		ApiRegistrationUtil::registerProvider($this->apiProvider);
 		$this->registerApiOnPlatform($this->apiProvider); //TODO: nukkitx and bukkit have this feature, not pocketmine
 
 		$this->extensionManager = new SimpleExtensionManager($this);
-		$this->extensionManager->loadExtensions($this->getDataFolder().'extensions'.DIRECTORY_SEPARATOR);
+		$this->extensionManager->loadExtensions($this->getDataFolder() . 'extensions' . DIRECTORY_SEPARATOR);
 
 		$syncMins = $this->getConfiguration()->get(ConfigKeys::SYNC_TIME());
-		if($syncMins > 0) {
-			$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function() {
+		if($syncMins > 0){
+			$this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function(){
 				$this->syncTaskBuffer->request();
 			}), 20 * 60 * $syncMins);
 		}
 
 		$this->getLogger()->debug("Performing initial data load...");
-		try {
+		try{
 			(new SyncTask($this))->run();
-		}catch(\Exception $e) {
+		}catch(\Exception $e){
 			$this->getLogger()->logException($e);
 		}
 
@@ -209,48 +214,48 @@ class LuckPerms extends PluginBase{
 
 		$pluginManager = $this->getServer()->getPluginManager();
 		$permDefault = $this->getConfiguration()->get(ConfigKeys::COMMANDS_ALLOW_OP()) ? DefaultPermissions::ROOT_OPERATOR : null;
-		foreach(CommandPermission::getAll() as $permission) {
+		foreach(CommandPermission::getAll() as $permission){
 			$bukkitPermission = new Permission($permission->getPermission(), null, $permDefault);
 			$pluginManager->removePermission($bukkitPermission);
 			$pluginManager->addPermission($bukkitPermission);
 		}
 
-		if(!$this->getConfiguration()->get(ConfigKeys::OPS_ENABLED())) {
+		if(!$this->getConfiguration()->get(ConfigKeys::OPS_ENABLED())){
 			$ops = $this->getServer()->getOps();
 			$ops->setAll([]);
 		}
 
-		if($this->getConfiguration()->get(ConfigKeys::AUTO_OP())) {
+		if($this->getConfiguration()->get(ConfigKeys::AUTO_OP())){
 			$this->getApiProvider()->getEventBus()->subscribe(new AutoOpListener($this));
 		}
 
-		foreach($this->getServer()->getOnlinePlayers() as $player) {
-			$this->getScheduler()->scheduleTask(new ClosureTask(function() use ($player) {
+		foreach($this->getServer()->getOnlinePlayers() as $player){
+			$this->getScheduler()->scheduleTask(new ClosureTask(function() use ($player){
 				try{
 					$user = $this->connectionListener->loadUser($player->getUniqueId(), $player->getName());
-					if($user !== null) {
-						$this->getScheduler()->scheduleTask(new ClosureTask(function() use ($player, $user) {
+					if($user !== null){
+						$this->getScheduler()->scheduleTask(new ClosureTask(function() use ($player, $user){
 							try{
 								$lpPermissible = new LuckPermsPermissible($player, $user, $this);
 								PermissibleInjector::inject($player, $lpPermissible);
-							}catch(\Throwable $t) {
-								$this->getLogger()->error('Exception thrown when setting up permissions for '.$player->getUniqueId().' - '.$player->getName());
+							}catch(\Throwable $t){
+								$this->getLogger()->error('Exception thrown when setting up permissions for ' . $player->getUniqueId() . ' - ' . $player->getName());
 								$this->getLogger()->logException($t);
 							}
 						}));
 					}
-				}catch(\Exception $e) {
-					$this->getLogger()->error('Exception occurred whilst loading data for '.$player->getUniqueId().' - '.$player->getName());
+				}catch(\Exception $e){
+					$this->getLogger()->error('Exception occurred whilst loading data for ' . $player->getUniqueId() . ' - ' . $player->getName());
 					$this->getLogger()->logException($e);
 				}
 			}));
 		}
 
-		$timeTaken = microtime(true) - $this->getServer()->getStartTime();
+		$timeTaken = \microtime(true) - $this->getServer()->getStartTime();
 		$this->getLogger()->debug("Sucessfully enabled. (took {$timeTaken}ms)");
 	}
 
-	public function onDisable() : void {
+	public function onDisable() : void{
 		$this->getLogger()->debug('Starting shutdown process...');
 
 		$this->getScheduler()->cancelAllTasks();
@@ -260,22 +265,22 @@ class LuckPerms extends PluginBase{
 
 		$this->extensionManager->close();
 
-		foreach($this->getServer()->getOnlinePlayers() as $player) {
+		foreach($this->getServer()->getOnlinePlayers() as $player){
 			try{
 				PermissibleInjector::uninject($player, false);
-			}catch(\Exception $e) {
-				$this->getLogger()->error('Exception thrown when unloading permissions from '.$player->getUniqueId().' - '.$player->getName());
+			}catch(\Exception $e){
+				$this->getLogger()->error('Exception thrown when unloading permissions from ' . $player->getUniqueId() . ' - ' . $player->getName());
 				$this->getLogger()->logException($e);
 			}
 
-			if($this->getConfiguration()->get(ConfigKeys::AUTO_OP())) {
+			if($this->getConfiguration()->get(ConfigKeys::AUTO_OP())){
 				// TODO: deop players
 				$player->unsetBasePermission(DefaultPermissions::ROOT_OPERATOR);
 				$player->setBasePermission(DefaultPermissions::ROOT_USER, true);
 			}
 
 			$user = $this->getUserManager()->getIfLoaded($player->getUniqueId());
-			if($user !== null) {
+			if($user !== null){
 				$user->getCachedData()->invalidate();
 				$this->getUserManager()->unload($user->getUniqueId());
 			}
@@ -286,7 +291,7 @@ class LuckPerms extends PluginBase{
 		InjectorDefaultsMap::uninject();
 		(new PermissibleMonitoringInjector($this, Mode::UNINJECT()))->run();
 
-		if($this->messagingService !== null) {
+		if($this->messagingService !== null){
 			$this->getLogger()->debug('Closing messaging service...');
 			$this->messagingService->close();
 		}
@@ -294,7 +299,7 @@ class LuckPerms extends PluginBase{
 		$this->getLogger()->debug('Closing storage...');
 		$this->storage->shutdown();
 
-		if($this->fileWatcher !== null) {
+		if($this->fileWatcher !== null){
 			$this->fileWatcher->close();
 		}
 
@@ -307,179 +312,179 @@ class LuckPerms extends PluginBase{
 		$this->getLogger()->debug('Goodbye!');
 	}
 
-	public function setMessagingService(InternalMessagingService $messagingService) {
+	public function setMessagingService(InternalMessagingService $messagingService){
 		if($this->messagingService === null)
 			$this->messagingService = $messagingService;
 	}
 
-	public function getPlayer(Uuid $uniqueId) : ?Player {
+	public function getPlayer(Uuid $uniqueId) : ?Player{
 		foreach($this->getServer()->getOnlinePlayers() as $player)
 			if($player->getUniqueId()->equals($uniqueId))
 				return $player;
 		return null;
 	}
 
-	public function lookupUniqueId(string $username) : ?Uuid {
-		$uniqueId = $this->getStorage()->getPlayerUniqueId(strtolower($username));
+	public function lookupUniqueId(string $username) : ?Uuid{
+		$uniqueId = $this->getStorage()->getPlayerUniqueId(\strtolower($username));
 
 		$this->getEventDispatcher()->dispatchUniqueIdLookup($username, $uniqueId);
 
-		if($uniqueId == null and $this->getConfiguration()->get(ConfigKeys::USE_SERVER_UUID_CACHE())) {
+		if($uniqueId == null && $this->getConfiguration()->get(ConfigKeys::USE_SERVER_UUID_CACHE())){
 			$uniqueId = null; // PocketMine has no UUID cache yet
 		}
 
 		return $uniqueId;
 	}
 
-	public function lookupUsername(Uuid|string $uniqueId) : ?string {
+	public function lookupUsername(Uuid|string $uniqueId) : ?string{
 		$username = $this->getStorage()->getPlayerName($uniqueId);
 
 		$username = $this->getEventDispatcher()->dispatchUsernameLookup($uniqueId, $username);
 
-		if($username === null and $this->getConfiguration()->get(ConfigKeys::USE_SERVER_UUID_CACHE())) {
+		if($username === null && $this->getConfiguration()->get(ConfigKeys::USE_SERVER_UUID_CACHE())){
 			$username = null;
 		}
 
 		return $username;
 	}
 
-	public function testUsernameValidity(string $username) : bool {
-		if(DataConstraints::PLAYER_USERNAME_TEST_LENIENT()->test($username)) {
+	public function testUsernameValidity(string $username) : bool{
+		if(DataConstraints::PLAYER_USERNAME_TEST_LENIENT()->test($username)){
 			return false;
 		}
 
-		$valid = $this->getConfiguration()->get(ConfigKeys::ALLOW_INVALID_USERNAMES()) or DataConstraints::PLAYER_USERNAME_TEST()->test($username);
+		$valid = $this->getConfiguration()->get(ConfigKeys::ALLOW_INVALID_USERNAMES()) || DataConstraints::PLAYER_USERNAME_TEST()->test($username);
 
 		return $this->getEventDispatcher()->dispatchUsernameValidityCheck($username, $valid);
 	}
 
-    public function getTranslationManager() : TranslationManager {
-        return $this->translationManager;
-    }
+	public function getTranslationManager() : TranslationManager{
+		return $this->translationManager;
+	}
 
-    public function getVerboseHandler() : VerboseHandler {
-        return $this->verboseHandler;
-    }
+	public function getVerboseHandler() : VerboseHandler{
+		return $this->verboseHandler;
+	}
 
-    public function getPermissionRegistry() : PermissionRegistry {
-        return $this->permissionRegistry;
-    }
+	public function getPermissionRegistry() : PermissionRegistry{
+		return $this->permissionRegistry;
+	}
 
-    public function getLogDispatcher() : LogDispatcher {
-        return $this->logDispatcher;
-    }
+	public function getLogDispatcher() : LogDispatcher{
+		return $this->logDispatcher;
+	}
 
-	public function getConfiguration() : LuckPermsConfiguration {
+	public function getConfiguration() : LuckPermsConfiguration{
 		return $this->configuration;
 	}
 
-	public function getBytebin() : BytebinClient {
-        return $this->bytebin;
-    }
+	public function getBytebin() : BytebinClient{
+		return $this->bytebin;
+	}
 
-	public function getQueryOptionsForUser(User $user) {
+	public function getQueryOptionsForUser(User $user){
 		return $this->contextManager->getQueryOptions($this->getPlayer($user->getUniqueId()));
 	}
 
-	public function getOnlineSenders() : array {
-		return array_merge([$this->getConsoleSender()], array_map(function($player) {
+	public function getOnlineSenders() : array{
+		return \array_merge([$this->getConsoleSender()], \array_map(function($player){
 			return $this->getSenderFactory()->wrap($player);
 		}, $this->getServer()->getOnlinePlayers()));
 	}
 
-	public function getConsoleSender() {
+	public function getConsoleSender(){
 		return $this->getSenderFactory()->wrap(self::$consoleCommandSender);
 	}
 
-	public function getSenderFactory() : SenderFactory {
+	public function getSenderFactory() : SenderFactory{
 		return $this->senderFactory;
 	}
 
-	public function getConnectionListener() : AbstractConnectionListener {
-        return $this->connectionListener;
-    }
+	public function getConnectionListener() : AbstractConnectionListener{
+		return $this->connectionListener;
+	}
 
-    public function getCommandManager() : LuckPermsCommandExecutor {
-        return $this->commandManager;
-    }
+	public function getCommandManager() : LuckPermsCommandExecutor{
+		return $this->commandManager;
+	}
 
-    public function getUserManager() : StandardUserManager {
-        return $this->userManager;
-    }
+	public function getUserManager() : StandardUserManager{
+		return $this->userManager;
+	}
 
-    public function getGroupManager() : StandardGroupManager {
-        return $this->groupManager;
-    }
+	public function getGroupManager() : StandardGroupManager{
+		return $this->groupManager;
+	}
 
-    public function getTrackManager() : StandardTrackManager {
-        return $this->trackManager;
-    }
+	public function getTrackManager() : StandardTrackManager{
+		return $this->trackManager;
+	}
 
-    public function getContextManager() : ContextManager {
-        return $this->contextManager;
-    }
+	public function getContextManager() : ContextManager{
+		return $this->contextManager;
+	}
 
-    public function getSubscriptionMap() : LuckPermsSubscriptionMap {
-        return $this->subscriptionMap;
-    }
+	public function getSubscriptionMap() : LuckPermsSubscriptionMap{
+		return $this->subscriptionMap;
+	}
 
-	public function setSubscriptionMap(LuckPermsSubscriptionMap $subscriptionMap) : void {
-        $this->subscriptionMap = $subscriptionMap;
-    }
+	public function setSubscriptionMap(LuckPermsSubscriptionMap $subscriptionMap) : void{
+		$this->subscriptionMap = $subscriptionMap;
+	}
 
-	public function getPermissionMap() : LuckPermsPermissionMap {
-        return $this->permissionMap;
-    }
+	public function getPermissionMap() : LuckPermsPermissionMap{
+		return $this->permissionMap;
+	}
 
-    public function setPermissionMap(LuckPermsPermissionMap $permissionMap) : void {
+	public function setPermissionMap(LuckPermsPermissionMap $permissionMap) : void{
 		$this->permissionMap = $permissionMap;
 	}
 
-    public function getDefaultPermissionMap() : LuckPermsDefaultsMap {
-        return $this->defaultPermissionMap;
-    }
+	public function getDefaultPermissionMap() : LuckPermsDefaultsMap{
+		return $this->defaultPermissionMap;
+	}
 
-    public function setDefaultPermissionMap(LuckPermsDefaultsMap $defaultPermissionMap) : void {
+	public function setDefaultPermissionMap(LuckPermsDefaultsMap $defaultPermissionMap) : void{
 		$this->defaultPermissionMap = $defaultPermissionMap;
 	}
 
-    public function getTranslationRepository() : TranslationRepository {
-        return $this->translationRepository;
-    }
+	public function getTranslationRepository() : TranslationRepository{
+		return $this->translationRepository;
+	}
 
-    public function getFileWatcher() : ?FileWatcher {
-        return $this->fileWatcher;
-    }
+	public function getFileWatcher() : ?FileWatcher{
+		return $this->fileWatcher;
+	}
 
-    public function getStorage() : Storage {
-        return $this->storage;
-    }
+	public function getStorage() : Storage{
+		return $this->storage;
+	}
 
-    public function getMessagingService() : ?InternalMessagingService {
-        return $this->messagingService;
-    }
+	public function getMessagingService() : ?InternalMessagingService{
+		return $this->messagingService;
+	}
 
-    public function getSyncTaskBuffer() : Buffer {
-        return $this->syncTaskBuffer;
-    }
+	public function getSyncTaskBuffer() : Buffer{
+		return $this->syncTaskBuffer;
+	}
 
-    public function getInheritanceGraphFactory() : InheritanceGraphFactory {
-        return $this->inheritanceGraphFactory;
-    }
+	public function getInheritanceGraphFactory() : InheritanceGraphFactory{
+		return $this->inheritanceGraphFactory;
+	}
 
-    public function getCalculatorFactory() : CalculatorFactory {
-        return $this->calculatorFactory;
-    }
+	public function getCalculatorFactory() : CalculatorFactory{
+		return $this->calculatorFactory;
+	}
 
-    public function getApiProvider() : LuckPermsApiProvider {
-        return $this->apiProvider;
-    }
+	public function getApiProvider() : LuckPermsApiProvider{
+		return $this->apiProvider;
+	}
 
-    public function getExtensionManager() : SimpleExtensionManager {
-        return $this->extensionManager;
-    }
+	public function getExtensionManager() : SimpleExtensionManager{
+		return $this->extensionManager;
+	}
 
-    public function getEventDispatcher() : EventDispatcher {
-        return $this->eventDispatcher;
-    }
+	public function getEventDispatcher() : EventDispatcher{
+		return $this->eventDispatcher;
+	}
 }

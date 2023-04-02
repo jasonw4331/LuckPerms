@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\query;
 
 use jasonwynn10\LuckPerms\util\traits\MixedRegistryTrait;
@@ -17,9 +20,10 @@ use Ramsey\Collection\Set;
  */
 final class FlagUtils{
 	use MixedRegistryTrait;
-	private function __construct(){}
 
-	protected static function register(string $name, mixed $member) : void {
+	private function __construct(){ }
+
+	protected static function register(string $name, mixed $member) : void{
 		self::_registryRegister($name, $member);
 	}
 
@@ -33,23 +37,21 @@ final class FlagUtils{
 		return $result;
 	}
 
-	protected static function setup() : void {
+	protected static function setup() : void{
 		self::register("ALL_FLAGS_SET", new Set(Flag::class, Flag::getAll()));
 		self::register("ALL_FLAGS_SIZE", self::ALL_FLAGS_SET()->count());
 		self::register("ALL_FLAGS", self::toByte0(self::ALL_FLAGS_SET()));
 	}
 
-	public static function read(int $b, Flag $setting) : bool {
+	public static function read(int $b, Flag $setting) : bool{
 		return ($b >> $setting->ordinal() & 1) == 1; // TODO: ordinal PR for PocketMine
 	}
 
 	/**
 	 * @param Set<Flag> $settings
-	 *
-	 * @return int
 	 */
-	public static function toByte(Set $settings) : int {
-		if($settings->count() === self::ALL_FLAGS_SIZE()) {
+	public static function toByte(Set $settings) : int{
+		if($settings->count() === self::ALL_FLAGS_SIZE()){
 			return self::ALL_FLAGS();
 		}
 		return self::toByte0($settings);
@@ -57,21 +59,19 @@ final class FlagUtils{
 
 	/**
 	 * @param Set<Flag> $settings
-	 *
-	 * @return int
 	 */
-	private static function toByte0(Set $settings) : int {
+	private static function toByte0(Set $settings) : int{
 		$b = 0;
-		foreach($settings as $setting) {
+		foreach($settings as $setting){
 			$b |= 1 << $setting->ordinal();
 		}
 		return $b;
 	}
 
-	public static function toSet(int $b) : Set {
+	public static function toSet(int $b) : Set{
 		$settings = new Set(Flag::class, Flag::getAll());
-		foreach($settings as $setting) {
-			if(self::read($b, $setting)) {
+		foreach($settings as $setting){
+			if(self::read($b, $setting)){
 				$settings->add($setting);
 			}
 		}

@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\api\node;
@@ -31,7 +33,7 @@ use pocketmine\utils\EnumTrait;
  * @method static SimpleNodeType SUFFIX()
  * @method static SimpleNodeType WEIGHT()
  */
-abstract class NodeType {
+abstract class NodeType{
 	use EnumTrait {
 		__construct as Enum___construct;
 	}
@@ -50,20 +52,20 @@ abstract class NodeType {
 			new SimpleNodeType("WEIGHT", static fn(Node $n) : bool => $n instanceof WeightNode),
 			new SimpleNodeType("DISPLAY_NAME", static fn(Node $n) : bool => $n instanceof DisplayNameNode),
 			new SimpleNodeType("CHAT_META", static fn(Node $n) : bool => $n instanceof ChatMetaNode),
-			new SimpleNodeType("META_OR_CHAT_META", fn(Node $n) : bool => $this->META()->matches($n) or $this->CHAT_META()->matches($n)),
+			new SimpleNodeType("META_OR_CHAT_META", fn(Node $n) : bool => $this->META()->matches($n) || $this->CHAT_META()->matches($n)),
 		);
 	}
 
-	public function __construct(string $name) {
+	public function __construct(string $name){
 		$this->Enum___construct($name);
 	}
 
 	abstract public function matches(Node $node) : bool;
 
-	public function predicate(?callable $and = null) : callable {
-		if($and === null) {
+	public function predicate(?callable $and = null) : callable{
+		if($and === null){
 			return [$this, "matches"];
 		}
-		return fn($node) => $this->matches($node) and $and($node);
+		return fn($node) => $this->matches($node) && $and($node);
 	}
 }

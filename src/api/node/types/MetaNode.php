@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\api\node\types;
@@ -18,7 +20,7 @@ abstract class MetaNode extends ScopedNode{
 	abstract function getMetaValue() : string;
 
 	public static function builder(?string $key = null, ?string $value = null) : MetaNodeBuilder{
-		if($key === null and $value === null){
+		if($key === null && $value === null){
 			return LuckPermsProvider::get()->getNodeBuilderRegistry()->forMeta();
 		}
 		return LuckPermsProvider::get()->getNodeBuilderRegistry()->forMeta()->key($key)->value($value);

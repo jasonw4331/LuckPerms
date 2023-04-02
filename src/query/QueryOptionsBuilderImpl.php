@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\query;
 
 use jasonwynn10\LuckPerms\api\query\QueryOptions;
@@ -24,8 +27,8 @@ class QueryOptionsBuilderImpl implements Builder{
 		$this->copyOptions = false;
 	}
 
-	public function mode(QueryMode $mode) : Builder {
-		if($this->mode === $mode) {
+	public function mode(QueryMode $mode) : Builder{
+		if($this->mode === $mode){
 			return $this;
 		}
 
@@ -34,12 +37,12 @@ class QueryOptionsBuilderImpl implements Builder{
 		return $this;
 	}
 
-	public function flag(Flag $flag, bool $value) : Builder {
-		if($this->flagsSet === null and FlagUtils::read($this->flags, $flag) === $value) {
+	public function flag(Flag $flag, bool $value) : Builder{
+		if($this->flagsSet === null && FlagUtils::read($this->flags, $flag) === $value){
 			return $this;
 		}
 
-		if($this->flagsSet === null) {
+		if($this->flagsSet === null){
 			$this->flagsSet = FlagUtils::toSet($this->flags);
 		}
 		if($value){
@@ -53,8 +56,6 @@ class QueryOptionsBuilderImpl implements Builder{
 
 	/**
 	 * @param Set<Flag> $flags
-	 *
-	 * @return Builder
 	 */
 	public function flags(Set $flags) : Builder{
 		foreach($flags as $flag)
@@ -64,13 +65,13 @@ class QueryOptionsBuilderImpl implements Builder{
 	}
 
 	public function option($key, $value) : Builder{
-		if($this->options === null or $this->copyOptions){
+		if($this->options === null || $this->copyOptions){
 			if($this->options === null){
 				$this->options = [];
 			}
 			$this->copyOptions = false;
 		}
-		if($value === null) {
+		if($value === null){
 			unset($this->options[$key]);
 		}else{
 			$this->options[$key] = $value;
@@ -83,16 +84,16 @@ class QueryOptionsBuilderImpl implements Builder{
 		return $this;
 	}
 
-	public function build() : QueryOptions {
+	public function build() : QueryOptions{
 		$flags = $this->flagsSet !== null ? FlagUtils::toByte($this->flagsSet) : $this->flags;
 
-		if($this->options === null) {
-			if($this->mode === QueryMode::NON_CONTEXTUAL()) {
-				if(FlagUtils::ALL_FLAGS() === $flags) {
+		if($this->options === null){
+			if($this->mode === QueryMode::NON_CONTEXTUAL()){
+				if(FlagUtils::ALL_FLAGS() === $flags){
 					return QueryOptionsImpl::DEFAULT_NON_CONTEXTUAL();
 				}
-			}elseif($this->mode === QueryMode::CONTEXTUAL()) {
-				if(FlagUtils::ALL_FLAGS() === $flags and empty($this->context)) {
+			}elseif($this->mode === QueryMode::CONTEXTUAL()){
+				if(FlagUtils::ALL_FLAGS() === $flags && empty($this->context)){
 					return QueryOptionsImpl::DEFAULT_CONTEXTUAL();
 				}
 			}

@@ -1,17 +1,17 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\tasks;
 
 use jasonwynn10\LuckPerms\LuckPerms;
 use pocketmine\scheduler\CancelTaskException;
 use pocketmine\scheduler\Task;
 
-class CacheHousekeepingTask extends Task {
+class CacheHousekeepingTask extends Task{
 	private LuckPerms $plugin;
 
-	/**
-	 * @param LuckPerms $plugin
-	 */
 	public function __construct(LuckPerms $plugin){
 		$this->plugin = $plugin;
 	}
@@ -22,10 +22,10 @@ class CacheHousekeepingTask extends Task {
 	 * @throws CancelTaskException
 	 */
 	public function onRun() : void{
-		foreach($this->plugin->getUserManager()->getAll() as $user) {
+		foreach($this->plugin->getUserManager()->getAll() as $user){
 			$user->getCachedData()->performCacheCleanup();
 		}
-		foreach($this->plugin->getGroupManager()->getAll() as $group) {
+		foreach($this->plugin->getGroupManager()->getAll() as $group){
 			$group->getCachedData()->performCacheCleanup();
 		}
 	}

@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\api\metastacking;
 
 use pocketmine\utils\EnumTrait;
@@ -22,25 +25,25 @@ final class DuplicateRemovalFunction{
 
 	private $func;
 
-	protected static function setup() : void {
+	protected static function setup() : void{
 		self::registerAll(
-			new self("RETAIN_ALL", function(array &$list) : void {}),
-			new self("FIRST_ONLY", function(array &$list) : void {
-				$seen = new \SplFixedArray(count($list)-1);
-				foreach($list as $key => $item) {
+			new self("RETAIN_ALL", function(array &$list) : void{ }),
+			new self("FIRST_ONLY", function(array &$list) : void{
+				$seen = new \SplFixedArray(\count($list) - 1);
+				foreach($list as $key => $item){
 					try{
 						$seen[] = $item;
-					}catch(\Exception $e) {
+					}catch(\Exception $e){
 						unset($item[$key]);
 					}
 				}
 			}),
-			new self("LAST_ONLY", function(array &$list) : void {
-				$seen = new \SplFixedArray(count($list)-1);
-				foreach(array_reverse($list, true) as $key => $item) {
+			new self("LAST_ONLY", function(array &$list) : void{
+				$seen = new \SplFixedArray(\count($list) - 1);
+				foreach(\array_reverse($list, true) as $key => $item){
 					try{
 						$seen[] = $item;
-					}catch(\Exception $e) {
+					}catch(\Exception $e){
 						unset($item[$key]);
 					}
 				}
@@ -48,9 +51,9 @@ final class DuplicateRemovalFunction{
 		);
 	}
 
-	private function __construct(string $name, callable $func) {
+	private function __construct(string $name, callable $func){
 		$this->Enum___construct($name);
-		Utils::validateCallableSignature(function(array &$list) : void {}, $func);
+		Utils::validateCallableSignature(function(array &$list) : void{ }, $func);
 		$this->func = $func;
 	}
 }

@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\api\node\types;
@@ -15,8 +17,8 @@ abstract class InheritanceNode extends ScopedNode{
 
 	abstract function getGroupName() : string;
 
-	public static function builder(string|Group|null $group = null) : InheritanceNodeBuilder {
-		if($group === null) {
+	public static function builder(string|Group|null $group = null) : InheritanceNodeBuilder{
+		if($group === null){
 			return LuckPermsProvider::get()->getNodeBuilderRegistry()->forInheritance();
 		}
 		return LuckPermsProvider::get()->getNodeBuilderRegistry()->forInheritance()->group($group);

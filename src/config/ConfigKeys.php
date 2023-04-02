@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\config;
 
 use jasonwynn10\LuckPerms\api\context\ContextSatisfyMode;
@@ -117,7 +120,7 @@ use Ramsey\Collection\Set;
  * @method static SimpleConfigKey WORLD_REWRITES()
  */
 final class ConfigKeys{
-	use RegistryTrait{
+	use RegistryTrait {
 		_registryRegister as register;
 	}
 
@@ -134,34 +137,34 @@ final class ConfigKeys{
 
 	protected static function setup() : void{
 		self::register("server", ConfigKeyFactory::lowercaseStringKey('server', 'global'));
-		self::register("sync_time", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c) {
+		self::register("sync_time", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c){
 			$val = $c->getInteger('sync-minutes', -1);
-			if($val === -1) {
+			if($val === -1){
 				$val = $c->getInteger('data.sync-minutes', -1);
 			}
 			return $val;
 		})));
-		self::register("global_query_options", ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : QueryOptions {
-				$flags = new Set(Flag::RESOLVE_INHERITANCE());
-				if($c->getBoolean('include-global', true)) {
-					$flags[] = Flag::INCLUDE_NODES_WITHOUT_SERVER_CONTEXT();
-				}
-				if($c->getBoolean('include-global-world', true)) {
-					$flags[] = Flag::INCLUDE_NODES_WITHOUT_WORLD_CONTEXT();
-				}
-				if($c->getBoolean('apply-global-groups', true)) {
-					$flags[] = Flag::APPLY_INHERITANCE_NODES_WITHOUT_SERVER_CONTEXT();
-				}
-				if($c->getBoolean('apply-global-world-groups', true)) {
-					$flags[] = Flag::APPLY_INHERITANCE_NODES_WITHOUT_WORLD_CONTEXT();
-				}
+		self::register("global_query_options", ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : QueryOptions{
+			$flags = new Set(Flag::class, Flag::RESOLVE_INHERITANCE());
+			if($c->getBoolean('include-global', true)){
+				$flags[] = Flag::INCLUDE_NODES_WITHOUT_SERVER_CONTEXT();
+			}
+			if($c->getBoolean('include-global-world', true)){
+				$flags[] = Flag::INCLUDE_NODES_WITHOUT_WORLD_CONTEXT();
+			}
+			if($c->getBoolean('apply-global-groups', true)){
+				$flags[] = Flag::APPLY_INHERITANCE_NODES_WITHOUT_SERVER_CONTEXT();
+			}
+			if($c->getBoolean('apply-global-world-groups', true)){
+				$flags[] = Flag::APPLY_INHERITANCE_NODES_WITHOUT_WORLD_CONTEXT();
+			}
 
-				return (new QueryOptionsBuilderImpl(QueryMode::CONTEXTUAL()))->flags($flags)->build();
-			}));
-		self::register("context_satisfy_mode", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : ContextSatisfyMode => mb_strtolower($c->getString('context-satisfy-mode', 'at-least-one-value-per-key')) === 'all-values-per-key' ? ContextSatisfyMode::ALL_VALUES_PER_KEY() : ContextSatisfyMode::AT_LEAST_ONE_VALUE_PER_KEY()));
-		self::register("disabled_contexts", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : Set {
+			return (new QueryOptionsBuilderImpl(QueryMode::CONTEXTUAL()))->flags($flags)->build();
+		}));
+		self::register("context_satisfy_mode", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : ContextSatisfyMode => \mb_strtolower($c->getString('context-satisfy-mode', 'at-least-one-value-per-key')) === 'all-values-per-key' ? ContextSatisfyMode::ALL_VALUES_PER_KEY() : ContextSatisfyMode::AT_LEAST_ONE_VALUE_PER_KEY()));
+		self::register("disabled_contexts", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : Set{
 			$contexts = $c->getStringList('disabled-contexts', []);
-			$contexts = array_map('mb_strtolower', $contexts);
+			$contexts = \array_map('mb_strtolower', $contexts);
 			return new Set("string", $contexts);
 		})));
 		self::register("use_server_uuid_cache", ConfigKeyFactory::booleanKey('use-server-uuid-cache', false));
@@ -172,25 +175,23 @@ final class ConfigKeys{
 		self::register("update_client_command_list", ConfigKeyFactory::notReloadable(ConfigKeyFactory::booleanKey('update-client-command-list', true)));
 		self::register("register_command_list_data", ConfigKeyFactory::notReloadable(ConfigKeyFactory::booleanKey('register-command-list-data', true)));
 		self::register("resolve_command_selectors", ConfigKeyFactory::booleanKey('resolve-command-selectors', false));
-		self::register("temporary_add_behaviour", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : TemporaryNodeMergeStrategy =>
-			match (mb_strtolower($c->getString('temporary-add-behaviour', 'deny'))) {
-				'accumulate' => TemporaryNodeMergeStrategy::ADD_NEW_DURATION_TO_EXISTING(),
-				'replace' => TemporaryNodeMergeStrategy::REPLACE_EXISTING_IF_DURATION_LONGER(),
-				default => TemporaryNodeMergeStrategy::NONE(),
-			})
+		self::register("temporary_add_behaviour", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : TemporaryNodeMergeStrategy => match (\mb_strtolower($c->getString('temporary-add-behaviour', 'deny'))) {
+			'accumulate' => TemporaryNodeMergeStrategy::ADD_NEW_DURATION_TO_EXISTING(),
+			'replace' => TemporaryNodeMergeStrategy::REPLACE_EXISTING_IF_DURATION_LONGER(),
+			default => TemporaryNodeMergeStrategy::NONE(),
+		})
 		);
-		self::register("primary_group_calculation_method", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : string {
-			$option = mb_strtolower($c->getString('primary-group-calculation', 'stored'));
-			if($option !== 'stored' and $option !== 'parents-by-weight' and $option !== 'all-parents-by-weight')
+		self::register("primary_group_calculation_method", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : string{
+			$option = \mb_strtolower($c->getString('primary-group-calculation', 'stored'));
+			if($option !== 'stored' && $option !== 'parents-by-weight' && $option !== 'all-parents-by-weight')
 				$option = 'stored';
 			return $option;
 		})));
-		self::register("primary_group_calculation", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : callable =>
-			match(self::PRIMARY_GROUP_CALCULATION_METHOD()->get($c)) {
-				default => [Stored::class, "__construct"],
-				'parents-by-weight' => [ParentsByWeight::class, "__construct"],
-				'all-parents-by-weight' => [AllParentsByWeight::class, "__construct"],
-			}))
+		self::register("primary_group_calculation", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : callable => match (self::PRIMARY_GROUP_CALCULATION_METHOD()->get($c)) {
+			default => [Stored::class, "__construct"],
+			'parents-by-weight' => [ParentsByWeight::class, "__construct"],
+			'all-parents-by-weight' => [AllParentsByWeight::class, "__construct"],
+		}))
 		);
 		self::register("prevent_primary_group_removal", ConfigKeyFactory::booleanKey('prevent-primary-group-removal', true));
 		self::register("use_argument_based_command_permissions", ConfigKeyFactory::booleanKey('argument-based-command-permissions', false));
@@ -211,48 +212,47 @@ final class ConfigKeys{
 		self::register("apply_attachment_permissions", ConfigKeyFactory::notReloadable(ConfigKeyFactory::booleanKey('apply-attachment-permissions', true)));
 		self::register("apply_bungee_config_permissions", ConfigKeyFactory::notReloadable(ConfigKeyFactory::booleanKey('apply-bungee-config-permissions', false)));
 		self::register("apply_sponge_default_subjects", ConfigKeyFactory::notReloadable(ConfigKeyFactory::booleanKey('apply-sponge-default-subjects', true)));
-		self::register("inheritance_traversal_algorithm", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : TraversalAlgorithm =>
-			match(mb_strtolower($c->getString('inheritance-traversal-algorithm', 'depth-first-pre-order'))) {
-				'breadth-first' => TraversalAlgorithm::BREADTH_FIRST(),
-				'depth-first-post-order' => TraversalAlgorithm::DEPTH_FIRST_POST_ORDER(),
-				default => TraversalAlgorithm::DEPTH_FIRST_PRE_ORDER(),
-			})
+		self::register("inheritance_traversal_algorithm", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : TraversalAlgorithm => match (\mb_strtolower($c->getString('inheritance-traversal-algorithm', 'depth-first-pre-order'))) {
+			'breadth-first' => TraversalAlgorithm::BREADTH_FIRST(),
+			'depth-first-post-order' => TraversalAlgorithm::DEPTH_FIRST_POST_ORDER(),
+			default => TraversalAlgorithm::DEPTH_FIRST_PRE_ORDER(),
+		})
 		);
 		self::register("post_traversal_inheritance_sort", ConfigKeyFactory::booleanKey('post-traversal-inheritance-sort', false));
-		self::register("meta_value_selector", ConfigKeyFactory::key(static function(ConfigurationAdapter $c) {
+		self::register("meta_value_selector", ConfigKeyFactory::key(static function(ConfigurationAdapter $c){
 			$defaultStrategy = Strategy::parse($c->getString('meta-value-selection-default', 'inheritance'));
 			$strategies = $c->getStringMap('meta-value-selection', new TypedMap("string", Strategy::class, []));
 			/** @var Strategy[] $strategies */
-			$strategies = array_filter(array_map(static fn(string $value) => Strategy::parse($value) ?? null, array_values($strategies)),'is_object');
+			$strategies = \array_filter(\array_map(static fn(string $value) => Strategy::parse($value) ?? null, \array_values($strategies)), 'is_object');
 			return new SimpleMetaValueSelector($strategies, $defaultStrategy);
 		}));
-		self::register("group_weights", ConfigKeyFactory::key(static function(ConfigurationAdapter $c) {
+		self::register("group_weights", ConfigKeyFactory::key(static function(ConfigurationAdapter $c){
 			/** @var array<string, int> $weights */
 			$weights = $c->getStringMap('group-weight', new TypedMap("string", "int", []));
-			return array_map(static fn(string $key, int $value) => [mb_strtolower($key), intval($value)], array_keys($weights), array_values($weights));
+			return \array_map(static fn(string $key, int $value) => [\mb_strtolower($key), \intval($value)], \array_keys($weights), \array_values($weights));
 		}));
-		self::register("prefix_formatting_options", ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : MetaStackDefinition {
+		self::register("prefix_formatting_options", ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : MetaStackDefinition{
 			$format = $c->getStringList('meta-formatting.prefix.format', []);
-			if(count($format) < 1)
+			if(\count($format) < 1)
 				$format[] = 'highest';
 			$startSpacer = $c->getString('meta-formatting.prefix.start-spacer', '');
 			$middleSpacer = $c->getString('meta-formatting.prefix.middle-spacer', ' ');
 			$endSpacer = $c->getString('meta-formatting.prefix.end-spacer', '');
-			$duplicateRemovalFunction = match(mb_strtolower($c->getString('meta-formatting.prefix.duplicates', ''))) {
+			$duplicateRemovalFunction = match (\mb_strtolower($c->getString('meta-formatting.prefix.duplicates', ''))) {
 				'first-only' => DuplicateRemovalFunction::FIRST_ONLY(),
 				'last-only' => DuplicateRemovalFunction::LAST_ONLY(),
 				default => DuplicateRemovalFunction::RETAIN_ALL(),
 			};
 			return new SimpleMetaStackDefinition(StandardStackElements::parseList($c->getPlugin(), $format), $duplicateRemovalFunction, $startSpacer, $middleSpacer, $endSpacer);
 		}));
-		self::register("suffix_formatting_options", ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : MetaStackDefinition {
+		self::register("suffix_formatting_options", ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : MetaStackDefinition{
 			$format = $c->getStringList('meta-formatting.suffix.format', []);
-			if(count($format) < 1)
+			if(\count($format) < 1)
 				$format[] = 'highest';
 			$startSpacer = $c->getString('meta-formatting.suffix.start-spacer', '');
 			$middleSpacer = $c->getString('meta-formatting.suffix.middle-spacer', ' ');
 			$endSpacer = $c->getString('meta-formatting.suffix.end-spacer', '');
-			$duplicateRemovalFunction = match(mb_strtolower($c->getString('meta-formatting.suffix.duplicates', ''))) {
+			$duplicateRemovalFunction = match (\mb_strtolower($c->getString('meta-formatting.suffix.duplicates', ''))) {
 				'first-only' => DuplicateRemovalFunction::FIRST_ONLY(),
 				'last-only' => DuplicateRemovalFunction::LAST_ONLY(),
 				default => DuplicateRemovalFunction::RETAIN_ALL(),
@@ -260,10 +260,10 @@ final class ConfigKeys{
 			return new SimpleMetaStackDefinition(StandardStackElements::parseList($c->getPlugin(), $format), $duplicateRemovalFunction, $startSpacer, $middleSpacer, $endSpacer);
 		}));
 		self::register("log_notify", ConfigKeyFactory::booleanKey('log-notify', true));
-		self::register("log_notify_filtered_descriptions", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : array => array_filter($c->getStringList('log-notify-filtered-descriptions', []), static fn(string $value) : bool => preg_match($value, '') === false)));
+		self::register("log_notify_filtered_descriptions", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : array => \array_filter($c->getStringList('log-notify-filtered-descriptions', []), static fn(string $value) : bool => \preg_match($value, '') === false)));
 		self::register("auto_install_translations", ConfigKeyFactory::notReloadable(ConfigKeyFactory::booleanKey('auto-install-translations', true)));
 		self::register("auto_op", ConfigKeyFactory::notReloadable(ConfigKeyFactory::booleanKey('auto-op', false)));
-		self::register("ops_enabled", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : bool => !self::AUTO_OP()->get($c) and $c->getBoolean('enable-ops', true))));
+		self::register("ops_enabled", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : bool => !self::AUTO_OP()->get($c) && $c->getBoolean('enable-ops', true))));
 		self::register("commands_allow_op", ConfigKeyFactory::notReloadable(ConfigKeyFactory::booleanKey('commands-allow-op', true)));
 		self::register("vault_unsafe_lookups", ConfigKeyFactory::booleanKey('vault-unsafe-lookups', false));
 		self::register("vault_group_use_displaynames", ConfigKeyFactory::booleanKey('vault-group-use-displaynames', true));
@@ -274,10 +274,10 @@ final class ConfigKeys{
 		self::register("vault_including_global", ConfigKeyFactory::booleanKey('vault-include-global', true));
 		self::register("vault_ignore_world", ConfigKeyFactory::booleanKey('vault-ignore-world', false));
 		self::register("fabric_integrated_server_owner_bypasss_checks", ConfigKeyFactory::booleanKey('integrated-server-owner-bypasses-checks', true));
-		self::register("disabled_context_calculators", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : array => array_map(static fn(string $value) : string => mb_strtolower($value), $c->getStringList('disabled-context-calculators', []))));
-		self::register("world_rewrites", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : WorldNameRewriter => WorldNameRewriter::of(array_map(static fn(string $key, string $value) => [mb_strtolower($key), mb_strtolower($value)], array_keys($array = $c->getStringMap('world-rewrite', new TypedMap("string", "string", []))), array_values($array)))));
+		self::register("disabled_context_calculators", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : array => \array_map(static fn(string $value) : string => \mb_strtolower($value), $c->getStringList('disabled-context-calculators', []))));
+		self::register("world_rewrites", ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : WorldNameRewriter => WorldNameRewriter::of(new TypedMap('string', 'string', \array_map(static fn(string $key, string $value) => [\mb_strtolower($key), \mb_strtolower($value)], \array_keys($array = $c->getStringMap('world-rewrite', new TypedMap("string", "string", []))), \array_values($array))))));
 		self::register("group_name_rewrites", ConfigKeyFactory::mapKey('group-name-rewrite'));
-		self::register("database_values", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : StorageCredentials {
+		self::register("database_values", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : StorageCredentials{
 			$maxPoolSize = $c->getInteger("data.pool-settings.maximum-pool-size", $c->getInteger("data.pool-size", 10));
 			$minIdle = $c->getInteger("data.pool-settings.minimum-idle", $maxPoolSize);
 			$maxLifetime = $c->getInteger("data.pool-settings.maximum-lifetime", 1800000);
@@ -299,13 +299,13 @@ final class ConfigKeys{
 		self::register("storage_method", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static fn(ConfigurationAdapter $c) : StorageType => StorageType::parse($c->getString('storage-method', 'sqlite'), StorageType::SQLITE()))));
 		self::register("watch_files", ConfigKeyFactory::booleanKey('watch-files', true));
 		self::register("split_storage", ConfigKeyFactory::notReloadable(ConfigKeyFactory::booleanKey('split-storage.enabled', false)));
-		self::register("split_storage_options", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : TypedMap {
+		self::register("split_storage_options", ConfigKeyFactory::notReloadable(ConfigKeyFactory::key(static function(ConfigurationAdapter $c) : TypedMap{
 			$map = new TypedMap(SplitStorageType::class, StorageType::class, []);
-			$map->put(SplitStorageType::USER(), StorageType::parse($c->getString('split-storage.user', 'sqlite'), StorageType::SQLITE()));
-			$map->put(SplitStorageType::GROUP(), StorageType::parse($c->getString('split-storage.group', 'sqlite'), StorageType::SQLITE()));
-			$map->put(SplitStorageType::TRACK(), StorageType::parse($c->getString('split-storage.track', 'sqlite'), StorageType::SQLITE()));
-			$map->put(SplitStorageType::UUID(), StorageType::parse($c->getString('split-storage.uuid', 'sqlite'), StorageType::SQLITE()));
-			$map->put(SplitStorageType::LOG(), StorageType::parse($c->getString('split-storage.log', 'sqlite'), StorageType::SQLITE()));
+			$map->put(SplitStorageType::USER()->name(), StorageType::parse($c->getString('split-storage.user', 'sqlite'), StorageType::SQLITE()));
+			$map->put(SplitStorageType::GROUP()->name(), StorageType::parse($c->getString('split-storage.group', 'sqlite'), StorageType::SQLITE()));
+			$map->put(SplitStorageType::TRACK()->name(), StorageType::parse($c->getString('split-storage.track', 'sqlite'), StorageType::SQLITE()));
+			$map->put(SplitStorageType::UUID()->name(), StorageType::parse($c->getString('split-storage.uuid', 'sqlite'), StorageType::SQLITE()));
+			$map->put(SplitStorageType::LOG()->name(), StorageType::parse($c->getString('split-storage.log', 'sqlite'), StorageType::SQLITE()));
 			return clone $map;
 		})));
 		self::register("messaging_service", ConfigKeyFactory::notReloadable(ConfigKeyFactory::lowercaseStringKey('messaging-service', 'auto')));

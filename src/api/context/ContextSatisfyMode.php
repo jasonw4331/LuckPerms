@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\api\context;
 
 use pocketmine\utils\EnumTrait;
@@ -18,14 +21,14 @@ final class ContextSatisfyMode{
 		__construct as Enum___construct;
 	}
 
-	protected static function setup() : void {
+	protected static function setup() : void{
 		self::registerAll(
 			new self("AT_LEAST_ONE_VALUE_PER_KEY"),
 			new self("ALL_VALUES_PER_KEY")
 		);
 	}
 
-	private function __construct(string $name) {
+	private function __construct(string $name){
 		$this->Enum___construct($name);
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\api\node;
@@ -37,7 +38,7 @@ abstract class Node{
 
 	abstract function getMetadata(NodeMetadataKey $key) : mixed;
 
-	public function metadata(NodeMetadataKey $key) : mixed {
+	public function metadata(NodeMetadataKey $key) : mixed{
 		return $this->getMetadata($key) ?? throw new \InvalidArgumentException("Node '" . $this->getKey() . "' does not have '" . $key->name() . "' attached.");
 	}
 

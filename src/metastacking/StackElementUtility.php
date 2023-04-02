@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\metastacking;
@@ -9,9 +11,7 @@ use jasonwynn10\LuckPerms\api\node\types\ChatMetaNode;
 
 class StackElementUtility implements MetaStackElement{
 
-	/**
-	 * @var callable
-	 */
+	/** @var callable */
 	private $function;
 
 	public function __construct(callable $function){

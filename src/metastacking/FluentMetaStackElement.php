@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\metastacking;
@@ -10,24 +12,23 @@ use Ramsey\Collection\Map\AbstractTypedMap;
 
 final class FluentMetaStackElement implements MetaStackElement{
 
-	public static function builder(string $name) : FluentMetaStackElementBuilder {
+	public static function builder(string $name) : FluentMetaStackElementBuilder{
 		return new FluentMetaStackElementBuilder($name);
 	}
 
 	private string $toString;
 
 	/**
-	 * @param string                            $name
-	 * @param AbstractTypedMap<string, string>  $params
-	 * @param List<MetaStackElement>            $subElements
+	 * @param AbstractTypedMap<string, string> $params
+	 * @param List<MetaStackElement>           $subElements
 	 */
 	public function __construct(string $name, AbstractTypedMap $params, private array $subElements){
 		$this->toString = $this->formToString($name, $params);
 	}
 
 	public function shouldAccumulate(ChatMetaType $type, ChatMetaNode $node, ChatMetaNode $current) : bool{
-		foreach($this->subElements as $element) {
-			if(!$element->shouldAccumulate($type, $node, $current)) {
+		foreach($this->subElements as $element){
+			if(!$element->shouldAccumulate($type, $node, $current)){
 				return false;
 			}
 		}
@@ -39,12 +40,9 @@ final class FluentMetaStackElement implements MetaStackElement{
 	}
 
 	/**
-	 * @param string                           $name
 	 * @param AbstractTypedMap<string, string> $params
-	 *
-	 * @return string
 	 */
-	private static function formToString(string $name, AbstractTypedMap $params) : string {
-        return $name . "(" . implode(', ', array_map(static fn($p) => $p->getKey().'='.$p->getValue(), $params->toArray())) . ")";
-    }
+	private static function formToString(string $name, AbstractTypedMap $params) : string{
+		return $name . "(" . \implode(', ', \array_map(static fn($p) => $p->getKey() . '=' . $p->getValue(), $params->toArray())) . ")";
+	}
 }

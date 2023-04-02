@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\config\generic\key;
@@ -11,7 +13,7 @@ use jasonwynn10\LuckPerms\config\generic\adapter\ConfigurationAdapter;
  */
 class SimpleConfigKey implements ConfigKey{
 	/**
-	 * @var callable $function
+	 * @var callable                                 $function
 	 * @phpstan-var callable(ConfigurationAdapter):T $function
 	 */
 	private $function;
@@ -20,17 +22,13 @@ class SimpleConfigKey implements ConfigKey{
 	private bool $reloadable = true;
 
 	/**
-	 * @param callable $function
 	 * @phpstan-param callable(ConfigurationAdapter):T $function
 	 */
-	public function __construct(callable $function) {
+	public function __construct(callable $function){
 		$this->function = $function;
 	}
 
 	/**
-	 * @param ConfigurationAdapter $adapter
-	 *
-	 * @return mixed
 	 * @phpstan-return T
 	 */
 	public function get(ConfigurationAdapter $adapter) : mixed{

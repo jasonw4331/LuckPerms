@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\metastacking;
 
 use jasonwynn10\LuckPerms\api\metastacking\DuplicateRemovalFunction;
@@ -26,42 +29,27 @@ class SimpleMetaStackDefinition implements MetaStackDefinition{
 		$this->hashCode = $this->calculateHashCode();
 	}
 
-	/**
-	 * @return array
-	 */
 	public function getElements() : array{
 		// TODO: Implement getElements() method.
 	}
 
-	/**
-	 * @return DuplicateRemovalFunction
-	 */
 	public function getDuplicateRemovalFunction() : DuplicateRemovalFunction{
 		// TODO: Implement getDuplicateRemovalFunction() method.
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getStartSpacer() : string{
 		// TODO: Implement getStartSpacer() method.
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getMiddleSpacer() : string{
 		// TODO: Implement getMiddleSpacer() method.
 	}
 
-	/**
-	 * @return string
-	 */
 	public function getEndSpacer() : string{
 		// TODO: Implement getEndSpacer() method.
 	}
 
-	private function calculateHashCode() : int {
+	private function calculateHashCode() : int{
 		return 0; // TODO: hash multiple object together
 	}
 }

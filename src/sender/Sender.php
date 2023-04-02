@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\sender;
@@ -9,31 +11,31 @@ use Ramsey\Uuid\Uuid;
 
 abstract class Sender{
 
-	CONST CONSOLE_UUID = Uuid::NIL;
+	const CONSOLE_UUID = Uuid::NIL;
 
-	CONST CONSOLE_NAME = "CONSOLE";
+	const CONSOLE_NAME = "CONSOLE";
 
 	abstract function getPlugin() : LuckPerms;
 
 	abstract function getName() : string;
 
-	public function getNameWithLocation() : string {
+	public function getNameWithLocation() : string{
 		$name = $this->getName();
 
 		$contextManager = $this->getPlugin()->getContextManager();
 
 		$staticContext = $contextManager->getStaticContext();
 
-		if($staticContext->isEmpty()) {
+		if($staticContext->isEmpty()){
 			return $name;
-		}elseif($staticContext->size() === 1) {
+		}elseif($staticContext->size() === 1){
 			$location = $staticContext->iterator()->next();
 		}else{
 			$servers = $staticContext->getValues(DefaultContextKeys::SERVER_KEY);
-			if($servers->size() === 1) {
+			if($servers->size() === 1){
 				$location = $servers->iterator()->next();
 			}else{
-				$location = implode(';', array_map(static fn($pair) => $pair->getKey() . "=" . $pair->getValue(), $staticContext->toSet()));
+				$location = \implode(';', \array_map(static fn($pair) => $pair->getKey() . "=" . $pair->getValue(), $staticContext->toSet()));
 			}
 		}
 
@@ -52,7 +54,7 @@ abstract class Sender{
 
 	abstract function isConsole() : bool;
 
-	public function isValid() : bool {
+	public function isValid() : bool{
 		return true;
 	}
 

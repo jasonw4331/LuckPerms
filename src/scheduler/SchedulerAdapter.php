@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\scheduler;
@@ -9,11 +11,11 @@ abstract class SchedulerAdapter{
 
 	abstract function sync() : Executor;
 
-	function executeAsync(\Closure $closure) : void {
+	function executeAsync(\Closure $closure) : void{
 		$this->async()->execute($closure);
 	}
 
-	function executeSync(\Closure $closure) : void {
+	function executeSync(\Closure $closure) : void{
 		$this->sync()->execute($closure);
 	}
 

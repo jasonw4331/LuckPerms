@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\api\node;
 
 use jasonwynn10\LuckPerms\api\node\types\ChatMetaNodeBuilder;
@@ -41,14 +44,11 @@ abstract class ChatMetaType{
 
 	private NodeType $nodeType;
 
-	public function __construct(string $name, NodeType $nodeType) {
+	public function __construct(string $name, NodeType $nodeType){
 		$this->Enum___construct($name);
 		$this->nodeType = $nodeType;
 	}
 
-	/**
-	 * @return NodeType
-	 */
 	public function nodeType() : NodeType{
 		return $this->nodeType;
 	}

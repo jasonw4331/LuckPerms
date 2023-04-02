@@ -1,7 +1,10 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\api\util;
+
 use pocketmine\utils\EnumTrait;
 
 /**
@@ -14,31 +17,31 @@ use pocketmine\utils\EnumTrait;
  * @method static Tristate TRUE()
  * @method static Tristate UNDEFINED()
  */
-final class Tristate {
+final class Tristate{
 	use EnumTrait {
 		__construct as Enum___construct;
 	}
 
-	protected static function setup() : void {
+	protected static function setup() : void{
 		self::registerAll(
-			new self("true",true),
-			new self("false",false),
-			new self("undefined",false)
+			new self("true", true),
+			new self("false", false),
+			new self("undefined", false)
 		);
 	}
 
 	private bool $booleanValue;
 
-	private function __construct(string $name, bool $booleanValue) {
+	private function __construct(string $name, bool $booleanValue){
 		$this->Enum___construct($name);
 		$this->booleanValue = $booleanValue;
 	}
 
-	public function of(bool|null $value) : Tristate {
+	public function of(bool|null $value) : Tristate{
 		return $value === null ? Tristate::UNDEFINED() : ($value ? Tristate::TRUE() : Tristate::FALSE());
 	}
 
-	public function asBoolean() : bool {
+	public function asBoolean() : bool{
 		return $this->booleanValue;
 	}
 

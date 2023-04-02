@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\api\node\types;
@@ -18,8 +20,8 @@ abstract class PermissionNode extends ScopedNode{
 
 	abstract function getWildcardLevel() : int;
 
-	public static function builder(?string $permission = null) : PermissionNodeBuilder {
-		if($permission === null) {
+	public static function builder(?string $permission = null) : PermissionNodeBuilder{
+		if($permission === null){
 			return LuckPermsProvider::get()->getNodeBuilderRegistry()->forPermission();
 		}
 		return LuckPermsProvider::get()->getNodeBuilderRegistry()->forPermission()->permission($permission);

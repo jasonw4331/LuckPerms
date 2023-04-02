@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\treeview;
 
 use jasonwynn10\LuckPerms\scheduler\SchedulerAdapter;
@@ -13,48 +16,45 @@ class PermissionRegistry{
 	private Queue $queue;
 	private SchedulerTask $task;
 
-	public function __construct(SchedulerAdapter $scheduler) {
+	public function __construct(SchedulerAdapter $scheduler){
 		$this->rootNode = new TreeNode();
 		$this->queue = new Queue("string");
 		$this->task = $scheduler->asyncRepeating(\Closure::fromCallable([$this, 'tick']), 100);
 	}
 
-	/**
-	 * @return TreeNode
-	 */
 	public function getRootNode() : TreeNode{
 		return $this->rootNode;
 	}
 
-	public function rootAsList() : array {
-		return array_values($this->rootNode->makeImmutableCopy()->getNodeEndings());
+	public function rootAsList() : array{
+		return \array_values($this->rootNode->makeImmutableCopy()->getNodeEndings());
 	}
 
-	public function offer(string $permission) : void {
+	public function offer(string $permission) : void{
 		$this->queue->offer($permission);
 	}
 
-	private function tick() : void {
-		for($e = null; ($e = $this->queue->poll()) !== null; ) {
+	private function tick() : void{
+		for($e = null; ($e = $this->queue->poll()) !== null;){
 			$this->insert($e);
 		}
 	}
 
-	public function close() : void {
+	public function close() : void{
 		$this->task->cancel();
 	}
 
-	public function insert(string $permission) : void {
-		$permission = mb_strtolower($permission);
+	public function insert(string $permission) : void{
+		$permission = \mb_strtolower($permission);
 
 		// split the permission up into parts
-		$parts = explode(".", $permission);
+		$parts = \explode(".", $permission);
 
 		// insert the permission into the node structure
 		$current = $this->rootNode;
-		foreach($parts as $part) {
+		foreach($parts as $part){
 			$current = $current->tryInsert($part);
-			if($current === null) {
+			if($current === null){
 				return;
 			}
 		}

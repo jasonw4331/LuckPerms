@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\graph;
 
 use pocketmine\utils\EnumTrait;
@@ -14,12 +17,12 @@ use pocketmine\utils\EnumTrait;
  * @method static TraversalAlgorithm DEPTH_FIRST_POST_ORDER()
  * @method static TraversalAlgorithm DEPTH_FIRST_PRE_ORDER()
  */
-abstract class TraversalAlgorithm {
+abstract class TraversalAlgorithm{
 	use EnumTrait {
 		__construct as Enum___construct;
 	}
 
-	protected static function setup() : void {
+	protected static function setup() : void{
 		self::registerAll(
 			new class("BREADTH_FIRST") extends TraversalAlgorithm{
 				public function traverse(Graph $graph, $startNode) : \Traversable{
@@ -39,7 +42,7 @@ abstract class TraversalAlgorithm {
 		);
 	}
 
-	private function __construct(string $name) {
+	private function __construct(string $name){
 		$this->Enum___construct($name);
 	}
 

@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\storage;
 
 use pocketmine\utils\EnumTrait;
@@ -52,10 +55,10 @@ final class StorageType{
 		$this->identifiers = $identifiers;
 	}
 
-	public static function parse(string $name, StorageType $default) : StorageType {
-		foreach(self::getAll() as $t) {
-			foreach($t->getIdentifiers() as $id) {
-				if(strtolower($name) === strtolower($id))
+	public static function parse(string $name, StorageType $default) : StorageType{
+		foreach(self::getAll() as $t){
+			foreach($t->getIdentifiers() as $id){
+				if(\strtolower($name) === \strtolower($id))
 					return $t;
 			}
 		}
@@ -65,7 +68,7 @@ final class StorageType{
 	/**
 	 * @return string[]
 	 */
-	public function getIdentifiers() : array {
+	public function getIdentifiers() : array{
 		return $this->identifiers;
 	}
 }

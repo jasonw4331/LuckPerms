@@ -1,4 +1,6 @@
 <?php
+
+
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\api\node\types;
@@ -14,8 +16,8 @@ abstract class DisplayNameNode extends ScopedNode{
 
 	abstract public function getDisplayName() : string;
 
-	public static function builder(?string $displayName = null) : DisplayNameNodeBuilder {
-		if($displayName === null) {
+	public static function builder(?string $displayName = null) : DisplayNameNodeBuilder{
+		if($displayName === null){
 			return LuckPermsProvider::get()->getNodeBuilderRegistry()->forDisplayName();
 		}
 		return LuckPermsProvider::get()->getNodeBuilderRegistry()->forDisplayName()->displayName($displayName);

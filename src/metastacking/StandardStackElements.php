@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\metastacking;
 
 use jasonwynn10\LuckPerms\api\metastacking\MetaStackElement;
@@ -26,7 +29,7 @@ use pocketmine\utils\CloningRegistryTrait;
  * @method static StackElementUtility OWN_CHECK()
  * @method static StackElementUtility TYPE_CHECK()
  */
-final class StandardStackElements {
+final class StandardStackElements{
 	use CloningRegistryTrait;
 
 	private function __construct(){
@@ -64,8 +67,8 @@ final class StandardStackElements {
 		self::register("lowest_inherited", (new FluentMetaStackElementBuilder("lowest_inherited"))->with(self::LOWEST_CHECK())->with(self::INHERITED_CHECK())->build());
 	}
 
-	public static function parseFromString(LuckPerms $plugin, string $s) : ?MetaStackElement {
-		$s = strtolower($s);
+	public static function parseFromString(LuckPerms $plugin, string $s) : ?MetaStackElement{
+		$s = \strtolower($s);
 
 		if($s === 'highest') return self::HIGHEST();
 		if($s === 'lowest') return self::LOWEST();
@@ -86,18 +89,18 @@ final class StandardStackElements {
 		return null;
 	}
 
-	private static function parseParam(string $s, string $prefix) : ?string {
-		if((0 === strncmp($s, $prefix, strlen($prefix))) and strlen($s) > strlen($prefix)) {
-			return substr($s, strlen($prefix));
+	private static function parseParam(string $s, string $prefix) : ?string{
+		if((0 === \strncmp($s, $prefix, \strlen($prefix))) && \strlen($s) > \strlen($prefix)){
+			return \substr($s, \strlen($prefix));
 		}
 		return null;
 	}
 
-	public static function parseList(LuckPerms $plugin, array $strings) : array {
-		return array_filter(array_map(function($s) use($plugin) {
+	public static function parseList(LuckPerms $plugin, array $strings) : array{
+		return \array_filter(\array_map(function($s) use ($plugin){
 			$parsed = self::parseFromString($plugin, $s);
-			if($parsed === null) {
-				$plugin->getLogger()->warning('Unable to parse from: '.$s);
+			if($parsed === null){
+				$plugin->getLogger()->warning('Unable to parse from: ' . $s);
 			}
 			return $parsed;
 		}, $strings));
@@ -107,7 +110,7 @@ final class StandardStackElements {
 
 	// highest
 
-	private static function highestFromGroupOnTrack(LuckPerms $plugin, string $trackName) : MetaStackElement {
+	private static function highestFromGroupOnTrack(LuckPerms $plugin, string $trackName) : MetaStackElement{
 		return FluentMetaStackElement::builder('HighestPriorityOnTrack')
 			->param('trackName', $trackName)
 			->with(self::TYPE_CHECK())
@@ -116,7 +119,7 @@ final class StandardStackElements {
 			->build();
 	}
 
-	private static function highestNotFromGroupOnTrack(LuckPerms $plugin, string $trackName) : MetaStackElement {
+	private static function highestNotFromGroupOnTrack(LuckPerms $plugin, string $trackName) : MetaStackElement{
 		return FluentMetaStackElement::builder('HighestPriorityNotOnTrack')
 			->param('trackName', $trackName)
 			->with(self::TYPE_CHECK())
@@ -125,7 +128,7 @@ final class StandardStackElements {
 			->build();
 	}
 
-	private static function highestFromGroup(string $groupName) : MetaStackElement {
+	private static function highestFromGroup(string $groupName) : MetaStackElement{
 		return MetaStackElement::builder('HighestPriorityFromGroup')
 			->param('groupName', $groupName)
 			->with(self::TYPE_CHECK())
@@ -134,7 +137,7 @@ final class StandardStackElements {
 			->build();
 	}
 
-	private static function highestNotFromGroup(string $groupName) : MetaStackElement {
+	private static function highestNotFromGroup(string $groupName) : MetaStackElement{
 		return FluentMetaStackElement::builder('HighestPriorityNotFromGroup')
 			->param('groupName', $groupName)
 			->with(self::TYPE_CHECK())
@@ -145,7 +148,7 @@ final class StandardStackElements {
 
 	// lowest
 
-	private static function lowestFromGroupOnTrack(LuckPerms $plugin, string $trackName) : MetaStackElement {
+	private static function lowestFromGroupOnTrack(LuckPerms $plugin, string $trackName) : MetaStackElement{
 		return FluentMetaStackElement::builder('LowestPriorityOnTrack')
 			->param('trackName', $trackName)
 			->with(self::TYPE_CHECK())
@@ -154,7 +157,7 @@ final class StandardStackElements {
 			->build();
 	}
 
-	private static function lowestNotFromGroupOnTrack(LuckPerms $plugin, string $trackName) : MetaStackElement {
+	private static function lowestNotFromGroupOnTrack(LuckPerms $plugin, string $trackName) : MetaStackElement{
 		return FluentMetaStackElement::builder('LowestPriorityNotOnTrack')
 			->param('trackName', $trackName)
 			->with(self::TYPE_CHECK())
@@ -163,7 +166,7 @@ final class StandardStackElements {
 			->build();
 	}
 
-	private static function lowestFromGroup(string $groupName) : MetaStackElement {
+	private static function lowestFromGroup(string $groupName) : MetaStackElement{
 		return MetaStackElement::builder('LowestPriorityFromGroup')
 			->param('groupName', $groupName)
 			->with(self::TYPE_CHECK())
@@ -172,7 +175,7 @@ final class StandardStackElements {
 			->build();
 	}
 
-	private static function lowestNotFromGroup(string $groupName) : MetaStackElement {
+	private static function lowestNotFromGroup(string $groupName) : MetaStackElement{
 		return FluentMetaStackElement::builder('LowestPriorityNotFromGroup')
 			->param('groupName', $groupName)
 			->with(self::TYPE_CHECK())

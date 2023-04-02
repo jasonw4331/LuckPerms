@@ -1,5 +1,8 @@
 <?php
+
+
 declare(strict_types=1);
+
 namespace jasonwynn10\LuckPerms\config\generic\key;
 
 use jasonwynn10\LuckPerms\config\generic\adapter\ConfigurationAdapter;
@@ -14,12 +17,14 @@ interface ConfigKey{
 	 * @return int the position
 	 */
 	public function ordinal() : int;
+
 	/**
 	 * Gets if the config key can be reloaded.
 	 *
 	 * @return bool the if the key can be reloaded
 	 */
 	public function reloadable() : bool;
+
 	/**
 	 * Resolves and returns the value mapped to this key using the given config instance.
 	 *
