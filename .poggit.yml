@@ -1,0 +1,20 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/jasonwynn10/LuckPerms
+build-by-default: true
+projects:
+  LuckPerms:
+    path: ""
+    icon: "icon.png"
+    lint: false
+    excludeDirs:
+      - tests
+      - .github
+      - build
+      - tools
+    excludeFiles:
+      - .gitignore
+      - CONTRIBUTING.md
+      - SECURITY.md
+    libs:
+      - src: CortexPE/Commando/Commando
+        version: ^3.0.0
+...
