@@ -68,7 +68,7 @@ class LuckPerms extends PluginBase{
 		reset as private _reset;
 	}
 
-	private static ?ConsoleCommandSender $consoleCommandSender = null;
+	private ConsoleCommandSender $consoleCommandSender;
 
 	private TranslationManager $translationManager;
 
@@ -102,10 +102,10 @@ class LuckPerms extends PluginBase{
 	public function onLoad() : void{
 		self::$instance = $this;
 
-		foreach($this->getServer()->getBroadcastChannelSubscribers(Server::BROADCAST_CHANNEL_ADMINISTRATIVE) as $sender){
-			/** @noinspection PhpFieldAssignmentTypeMismatchInspection */
-			self::$consoleCommandSender = $sender; // we know there is only 1 broadcast subscriber at this point: The console.
-		}
+		$reflection = new \ReflectionClass(Server::class);
+		$property = $reflection->getProperty("consoleSender"); // @see Server::$consoleSender
+		$property->setAccessible(true);
+		$this->consoleCommandSender = $property->getValue(Server::getInstance());
 
 		$this->translationManager = new TranslationManager($this);
 		$this->translationManager->reload();
