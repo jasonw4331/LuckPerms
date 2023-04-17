@@ -6,8 +6,10 @@ declare(strict_types=1);
 namespace jasonwynn10\LuckPerms\sender;
 
 use jasonwynn10\LuckPerms\api\util\Tristate;
+use jasonwynn10\LuckPerms\commands\generic\permission\CommandPermission;
 use jasonwynn10\LuckPerms\LuckPerms;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 abstract class Sender{
 
@@ -42,15 +44,19 @@ abstract class Sender{
 		return $name . "@" . $location;
 	}
 
-	abstract function getUniqueId() : Uuid;
+	abstract function getUniqueId() : UuidInterface;
 
 	abstract function sendMessage(string $message) : void;
 
 	abstract function getPermissionValue(string $permission) : Tristate;
 
-	abstract function hasPermission(string|CommandPermission $permission) : bool;
+	abstract function hasPermission(string $permission) : bool;
 
-	abstract function performCommand(string $command) : void;
+	public function hasCommandPermission(CommandPermission $permission) : bool{
+		return $this->hasPermission($permission->getPermission());
+	}
+
+	abstract function performCommand(string $commandLine) : void;
 
 	abstract function isConsole() : bool;
 
