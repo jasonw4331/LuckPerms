@@ -109,13 +109,15 @@ class LuckPerms extends PluginBase{
 
 		$this->translationManager = new TranslationManager($this);
 		$this->translationManager->reload();
+
+		// load some utilities early
+		$this->permissionRegistry = new PermissionRegistry($this->getScheduler());
 	}
 
 	public function onEnable() : void{
 		$this->senderFactory = new SenderFactory($this);
 
 		$this->verboseHandler = new VerboseHandler($this->getScheduler());
-		$this->permissionRegistry = new PermissionRegistry($this->getScheduler());
 		$this->logDispatcher = new LogDispatcher($this);
 
 		$this->getLogger()->debug("Loading configuration...");
