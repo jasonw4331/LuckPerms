@@ -1,12 +1,12 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\treeview;
 
-use jasonwynn10\LuckPerms\scheduler\SchedulerAdapter;
-use jasonwynn10\LuckPerms\scheduler\SchedulerTask;
+use pocketmine\scheduler\ClosureTask;
+use pocketmine\scheduler\TaskHandler;
+use pocketmine\scheduler\TaskScheduler;
 use Ramsey\Collection\Queue;
 
 class PermissionRegistry{
@@ -14,12 +14,12 @@ class PermissionRegistry{
 	private TreeNode $rootNode;
 	/** @var Queue<string> $queue */
 	private Queue $queue;
-	private SchedulerTask $task;
+	private TaskHandler $task;
 
-	public function __construct(SchedulerAdapter $scheduler){
+	public function __construct(TaskScheduler $scheduler){
 		$this->rootNode = new TreeNode();
 		$this->queue = new Queue("string");
-		$this->task = $scheduler->asyncRepeating(\Closure::fromCallable([$this, 'tick']), 100);
+		$this->task = $scheduler->scheduleRepeatingTask(new ClosureTask(\Closure::fromCallable([$this, 'tick'])), 20); // tick every second
 	}
 
 	public function getRootNode() : TreeNode{
