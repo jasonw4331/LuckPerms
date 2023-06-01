@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Setup PHP
-        uses: pmmp/setup-php-action@4d1b890176aa299211f4ccae76ddbf9bd008bbd6
+        uses: pmmp/setup-php-action@589cc43fddede20c8b0469828431d747fb1a1145
         with:
           php-version: ${{ matrix.php }}
           install-path: "./bin"
