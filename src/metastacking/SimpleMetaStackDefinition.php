@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\metastacking;
+namespace jasonw4331\LuckPerms\metastacking;
 
-use jasonwynn10\LuckPerms\api\metastacking\DuplicateRemovalFunction;
-use jasonwynn10\LuckPerms\api\metastacking\MetaStackDefinition;
+use jasonw4331\LuckPerms\api\metastacking\DuplicateRemovalFunction;
+use jasonw4331\LuckPerms\api\metastacking\MetaStackDefinition;
 
 class SimpleMetaStackDefinition implements MetaStackDefinition{
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\config\generic\key;
+namespace jasonw4331\LuckPerms\config\generic\key;
 
-use jasonwynn10\LuckPerms\config\generic\adapter\ConfigurationAdapter;
+use jasonw4331\LuckPerms\config\generic\adapter\ConfigurationAdapter;
 
 /**
  * @template T

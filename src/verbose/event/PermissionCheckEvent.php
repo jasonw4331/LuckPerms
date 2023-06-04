@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\verbose\event;
+namespace jasonw4331\LuckPerms\verbose\event;
 
-use jasonwynn10\LuckPerms\api\query\QueryOptions;
-use jasonwynn10\LuckPerms\cacheddata\result\TristateResult;
-use jasonwynn10\LuckPerms\node\utils\NodeJsonSerializer;
-use jasonwynn10\LuckPerms\verbose\VerboseCheckTarget;
+use jasonw4331\LuckPerms\api\query\QueryOptions;
+use jasonw4331\LuckPerms\cacheddata\result\TristateResult;
+use jasonw4331\LuckPerms\node\utils\NodeJsonSerializer;
+use jasonw4331\LuckPerms\verbose\VerboseCheckTarget;
 use function json_encode;
 use function mb_strtolower;
 use function str_starts_with;

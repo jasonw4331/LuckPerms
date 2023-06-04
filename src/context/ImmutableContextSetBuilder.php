@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\context;
+namespace jasonw4331\LuckPerms\context;
 
-use jasonwynn10\LuckPerms\api\context\Context;
+use jasonw4331\LuckPerms\api\context\Context;
 
 /**
  * A builder for {@link ImmutableContextSet}.

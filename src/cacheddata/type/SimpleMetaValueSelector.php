@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\cacheddata\type;
+namespace jasonw4331\LuckPerms\cacheddata\type;
 
-use jasonwynn10\LuckPerms\api\query\meta\MetaValueSelector;
+use jasonw4331\LuckPerms\api\query\meta\MetaValueSelector;
 
 class SimpleMetaValueSelector implements MetaValueSelector{
 	/** @var Strategy[] */

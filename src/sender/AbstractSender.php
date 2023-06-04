@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\sender;
+namespace jasonw4331\LuckPerms\sender;
 
-use jasonwynn10\LuckPerms\api\util\Tristate;
-use jasonwynn10\LuckPerms\LuckPerms;
-use jasonwynn10\LuckPerms\SenderFactory;
+use jasonw4331\LuckPerms\api\util\Tristate;
+use jasonw4331\LuckPerms\LuckPerms;
+use jasonw4331\LuckPerms\SenderFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\Server;
 use Ramsey\Uuid\UuidInterface;

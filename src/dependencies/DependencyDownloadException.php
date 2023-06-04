@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms;
+namespace jasonw4331\LuckPerms;
 
 class DependencyDownloadException{
 

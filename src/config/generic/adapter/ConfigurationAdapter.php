@@ -3,9 +3,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\config\generic\adapter;
+namespace jasonw4331\LuckPerms\config\generic\adapter;
 
-use jasonwynn10\LuckPerms\LuckPerms;
+use jasonw4331\LuckPerms\LuckPerms;
 use Ramsey\Collection\Map\AbstractTypedMap;
 
 interface ConfigurationAdapter{

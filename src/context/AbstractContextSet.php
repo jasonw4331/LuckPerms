@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\context;
+namespace jasonw4331\LuckPerms\context;
 
 abstract class AbstractContextSet implements ContextSet{
 

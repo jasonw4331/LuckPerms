@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\verbose;
+namespace jasonw4331\LuckPerms\verbose;
 
-use jasonwynn10\LuckPerms\api\query\QueryOptions;
-use jasonwynn10\LuckPerms\cacheddata\result\StringResult;
-use jasonwynn10\LuckPerms\cacheddata\result\TristateResult;
-use jasonwynn10\LuckPerms\sender\Sender;
-use jasonwynn10\LuckPerms\verbose\event\CheckOrigin;
-use jasonwynn10\LuckPerms\verbose\event\MetaCheckEvent;
-use jasonwynn10\LuckPerms\verbose\event\PermissionCheckEvent;
-use jasonwynn10\LuckPerms\verbose\event\VerboseEvent;
+use jasonw4331\LuckPerms\api\query\QueryOptions;
+use jasonw4331\LuckPerms\cacheddata\result\StringResult;
+use jasonw4331\LuckPerms\cacheddata\result\TristateResult;
+use jasonw4331\LuckPerms\sender\Sender;
+use jasonw4331\LuckPerms\verbose\event\CheckOrigin;
+use jasonw4331\LuckPerms\verbose\event\MetaCheckEvent;
+use jasonw4331\LuckPerms\verbose\event\PermissionCheckEvent;
+use jasonw4331\LuckPerms\verbose\event\VerboseEvent;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\scheduler\TaskScheduler;

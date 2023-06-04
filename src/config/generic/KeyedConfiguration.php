@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\config\generic;
+namespace jasonw4331\LuckPerms\config\generic;
 
-use jasonwynn10\LuckPerms\config\generic\adapter\ConfigurationAdapter;
-use jasonwynn10\LuckPerms\config\generic\key\ConfigKey;
-use jasonwynn10\LuckPerms\config\generic\key\SimpleConfigKey;
+use jasonw4331\LuckPerms\config\generic\adapter\ConfigurationAdapter;
+use jasonw4331\LuckPerms\config\generic\key\ConfigKey;
+use jasonw4331\LuckPerms\config\generic\key\SimpleConfigKey;
 use pocketmine\utils\EnumTrait;
 use function array_filter;
 use function count;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\command;
+namespace jasonw4331\LuckPerms\command;
 
 use CortexPE\Commando\args\StringEnumArgument;
 use pocketmine\command\CommandSender;

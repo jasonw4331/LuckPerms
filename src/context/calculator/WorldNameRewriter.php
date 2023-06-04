@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\context\calculator;
+namespace jasonw4331\LuckPerms\context\calculator;
 
-use jasonwynn10\LuckPerms\api\context\ContextConsumer;
+use jasonw4331\LuckPerms\api\context\ContextConsumer;
 use Ramsey\Collection\Map\TypedMap;
 
 abstract class WorldNameRewriter{

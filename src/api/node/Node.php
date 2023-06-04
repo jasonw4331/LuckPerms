@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\node;
+namespace jasonw4331\LuckPerms\api\node;
 
-use jasonwynn10\LuckPerms\api\LuckPermsProvider;
-use jasonwynn10\LuckPerms\api\node\metadata\NodeMetadataKey;
-use jasonwynn10\LuckPerms\context\ImmutableContextSet;
+use jasonw4331\LuckPerms\api\LuckPermsProvider;
+use jasonw4331\LuckPerms\api\node\metadata\NodeMetadataKey;
+use jasonw4331\LuckPerms\context\ImmutableContextSet;
 
 abstract class Node{
 

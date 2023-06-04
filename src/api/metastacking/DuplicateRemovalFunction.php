@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\metastacking;
+namespace jasonw4331\LuckPerms\api\metastacking;
 
 use pocketmine\utils\EnumTrait;
 use pocketmine\utils\Utils;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\query;
+namespace jasonw4331\LuckPerms\query;
 
-use jasonwynn10\LuckPerms\api\query\QueryOptions;
-use jasonwynn10\LuckPerms\context\ImmutableContextSet;
-use jasonwynn10\LuckPerms\context\ImmutableContextSetImpl;
+use jasonw4331\LuckPerms\api\query\QueryOptions;
+use jasonw4331\LuckPerms\context\ImmutableContextSet;
+use jasonw4331\LuckPerms\context\ImmutableContextSetImpl;
 use Ramsey\Collection\Set;
 
 class QueryOptionsBuilderImpl implements Builder{

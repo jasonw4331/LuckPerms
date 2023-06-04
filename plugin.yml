@@ -1,9 +1,9 @@
 name: LuckPerms
-main: jasonwynn10\LuckPerms\LuckPerms
-src-namespace-prefix: jasonwynn10\LuckPerms
-version: 0.1.0
-api: [4.0.0]
+main: jasonw4331\LuckPerms\LuckPerms
+src-namespace-prefix: jasonw4331\LuckPerms
+version: 1.0.0
+api: [5.0.0]
 load: STARTUP
-author: jasonwynn10
-description: A permissions plugin
+author: jasonw4331
+description: A permissions plugin for PocketMine-MP servers based on lucko/LuckPerms
 website: https://luckperms.net

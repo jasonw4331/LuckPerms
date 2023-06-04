@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\query\meta;
+namespace jasonw4331\LuckPerms\api\query\meta;
 
 interface MetaValueSelector{
 

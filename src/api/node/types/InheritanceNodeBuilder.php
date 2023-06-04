@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\node\types;
+namespace jasonw4331\LuckPerms\api\node\types;
 
-use jasonwynn10\LuckPerms\api\model\group\Group;
-use jasonwynn10\LuckPerms\api\node\NodeBuilder;
+use jasonw4331\LuckPerms\api\model\group\Group;
+use jasonw4331\LuckPerms\api\node\NodeBuilder;
 
 abstract class InheritanceNodeBuilder extends NodeBuilder{
 

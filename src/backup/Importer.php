@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\backup;
+namespace jasonw4331\LuckPerms\backup;
 
 class UserData{
 

@@ -3,9 +3,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\event;
+namespace jasonw4331\LuckPerms\event;
 
-use jasonwynn10\LuckPerms\EventBus;
+use jasonw4331\LuckPerms\EventBus;
 
 class EventDispatcher{
 

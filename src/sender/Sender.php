@@ -3,11 +3,11 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\sender;
+namespace jasonw4331\LuckPerms\sender;
 
-use jasonwynn10\LuckPerms\api\util\Tristate;
-use jasonwynn10\LuckPerms\commands\generic\permission\CommandPermission;
-use jasonwynn10\LuckPerms\LuckPerms;
+use jasonw4331\LuckPerms\api\util\Tristate;
+use jasonw4331\LuckPerms\commands\generic\permission\CommandPermission;
+use jasonw4331\LuckPerms\LuckPerms;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 

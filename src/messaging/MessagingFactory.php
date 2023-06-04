@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\messaging;
+namespace jasonw4331\LuckPerms\messaging;
 
 class MessagingFactory{
 

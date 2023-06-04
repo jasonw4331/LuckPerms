@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\tasks;
+namespace jasonw4331\LuckPerms\tasks;
 
-use jasonwynn10\LuckPerms\LuckPerms;
+use jasonw4331\LuckPerms\LuckPerms;
 use pocketmine\scheduler\CancelTaskException;
 use pocketmine\scheduler\Task;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\util;
+namespace jasonw4331\LuckPerms\util;
 
 use pocketmine\utils\Utils;
 use function hash;

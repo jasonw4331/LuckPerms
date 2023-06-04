@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\event\gen;
+namespace jasonw4331\LuckPerms\event\gen;
 
 class GeneratedEventClass{
 

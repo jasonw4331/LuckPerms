@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\node\types;
+namespace jasonw4331\LuckPerms\api\node\types;
 
-use jasonwynn10\LuckPerms\api\node\NodeType;
+use jasonw4331\LuckPerms\api\node\NodeType;
 
 abstract class SuffixNode extends ChatMetaNode{
 	public function getType() : NodeType{

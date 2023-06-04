@@ -1,0 +1,38 @@
+{
+	"name": "jasonw4331/luckperms",
+	"description": "A permissions plugin for PocketMine-MP servers based on lucko/LuckPerms",
+	"type": "library",
+	"license": "lgpl-3.0-or-later",
+	"authors": [{
+		"name": "jasonw4331",
+		"email": "jasonwynn10@gmail.com"
+	}],
+	"minimum-stability": "beta",
+	"prefer-stable": true,
+	"autoload": {
+		"psr-4": {
+			"jasonw4331\\LuckPerms\\": "/src"
+		}
+	},
+	"require": {
+		"cortexpe/commando": "dev-master",
+		"sof3/libasynql": "dev-pm5",
+		"sof3/await-generator": "^3.5.2"
+	},
+	"require-dev": {
+		"phpstan/phpstan": "^1",
+		"pocketmine/pocketmine-mp": "^5.0",
+		"phpstan/phpstan-strict-rules": "^1.0",
+		"phpstan/extension-installer": "^1.0",
+		"friendsofphp/php-cs-fixer": "^3.11"
+	},
+	"config": {
+		"allow-plugins": {
+			"phpstan/extension-installer": true
+		}
+	},
+	"scripts": {
+		"make-baseline": "@php ./vendor/bin/phpstan analyze -b phpstan-baseline.php -c phpstan.neon.dist --allow-empty-baseline",
+		"fix-codestyle": "@php ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --verbose --diff"
+	}
+}

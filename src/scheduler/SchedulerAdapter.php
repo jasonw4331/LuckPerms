@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\scheduler;
+namespace jasonw4331\LuckPerms\scheduler;
 
 abstract class SchedulerAdapter{
 

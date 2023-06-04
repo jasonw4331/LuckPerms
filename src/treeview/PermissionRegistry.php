@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\treeview;
+namespace jasonw4331\LuckPerms\treeview;
 
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskHandler;

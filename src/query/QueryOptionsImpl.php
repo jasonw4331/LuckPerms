@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\query;
+namespace jasonw4331\LuckPerms\query;
 
-use jasonwynn10\LuckPerms\api\query\QueryOptions;
+use jasonw4331\LuckPerms\api\query\QueryOptions;
 
 class QueryOptionsImpl extends QueryOptions{
 

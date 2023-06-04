@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\node\types;
+namespace jasonw4331\LuckPerms\api\node\types;
 
-use jasonwynn10\LuckPerms\api\node\NodeType;
-use jasonwynn10\LuckPerms\api\node\ScopedNode;
+use jasonw4331\LuckPerms\api\node\NodeType;
+use jasonw4331\LuckPerms\api\node\ScopedNode;
 use function is_string;
 
 abstract class WeightNode extends ScopedNode{

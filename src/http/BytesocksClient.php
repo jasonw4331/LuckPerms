@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\http;
+namespace jasonw4331\LuckPerms\http;
 
 use pocketmine\utils\InternetException;
 

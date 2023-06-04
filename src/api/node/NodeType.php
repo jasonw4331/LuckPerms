@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\node;
+namespace jasonw4331\LuckPerms\api\node;
 
-use jasonwynn10\LuckPerms\api\node\types\ChatMetaNode;
-use jasonwynn10\LuckPerms\api\node\types\DisplayNameNode;
-use jasonwynn10\LuckPerms\api\node\types\InheritanceNode;
-use jasonwynn10\LuckPerms\api\node\types\MetaNode;
-use jasonwynn10\LuckPerms\api\node\types\PermissionNode;
-use jasonwynn10\LuckPerms\api\node\types\PrefixNode;
-use jasonwynn10\LuckPerms\api\node\types\RegexPermissionNode;
-use jasonwynn10\LuckPerms\api\node\types\SuffixNode;
-use jasonwynn10\LuckPerms\api\node\types\WeightNode;
+use jasonw4331\LuckPerms\api\node\types\ChatMetaNode;
+use jasonw4331\LuckPerms\api\node\types\DisplayNameNode;
+use jasonw4331\LuckPerms\api\node\types\InheritanceNode;
+use jasonw4331\LuckPerms\api\node\types\MetaNode;
+use jasonw4331\LuckPerms\api\node\types\PermissionNode;
+use jasonw4331\LuckPerms\api\node\types\PrefixNode;
+use jasonw4331\LuckPerms\api\node\types\RegexPermissionNode;
+use jasonw4331\LuckPerms\api\node\types\SuffixNode;
+use jasonw4331\LuckPerms\api\node\types\WeightNode;
 use pocketmine\utils\EnumTrait;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\commands\user;
+namespace jasonw4331\LuckPerms\commands\user;
 
 use CortexPE\Commando\args\BooleanArgument;
 use CortexPE\Commando\args\IntegerArgument;
@@ -11,7 +11,7 @@ use CortexPE\Commando\args\StringEnumArgument;
 use CortexPE\Commando\args\TargetArgument;
 use CortexPE\Commando\args\TextArgument;
 use CortexPE\Commando\BaseSubCommand;
-use jasonwynn10\LuckPerms\command\SingleValueEnum;
+use jasonw4331\LuckPerms\command\SingleValueEnum;
 use pocketmine\command\CommandSender;
 
 class UserParentCommand extends BaseSubCommand{

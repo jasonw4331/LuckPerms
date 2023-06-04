@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\actionlog;
+namespace jasonw4331\LuckPerms\actionlog;
 
 class ActionComparator{
 

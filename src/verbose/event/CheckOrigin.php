@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\verbose\event;
+namespace jasonw4331\LuckPerms\verbose\event;
 
 use pocketmine\utils\EnumTrait;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\webeditor\store;
+namespace jasonw4331\LuckPerms\webeditor\store;
 
-use jasonwynn10\LuckPerms\config\ConfigKeys;
-use jasonwynn10\LuckPerms\CryptographyUtils;
-use jasonwynn10\LuckPerms\LuckPerms;
+use jasonw4331\LuckPerms\config\ConfigKeys;
+use jasonw4331\LuckPerms\CryptographyUtils;
+use jasonw4331\LuckPerms\LuckPerms;
 
 class WebEditorStore{
 

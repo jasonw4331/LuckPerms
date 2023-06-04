@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\storage;
+namespace jasonw4331\LuckPerms\storage;
 
-use jasonwynn10\LuckPerms\LuckPerms;
+use jasonw4331\LuckPerms\LuckPerms;
 
 class StorageFactory{
 

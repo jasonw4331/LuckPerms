@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\locale;
+namespace jasonw4331\LuckPerms\locale;
 
-use jasonwynn10\LuckPerms\LuckPerms;
+use jasonw4331\LuckPerms\LuckPerms;
 use Ramsey\Collection\Map\TypedMap;
 use Ramsey\Collection\Set;
 use Webmozart\PathUtil\Path;

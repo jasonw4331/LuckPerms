@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\storage\misc;
+namespace jasonw4331\LuckPerms\storage\misc;
 
 class StorageCredentials{
 

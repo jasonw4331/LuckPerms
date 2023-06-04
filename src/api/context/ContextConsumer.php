@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\context;
+namespace jasonw4331\LuckPerms\api\context;
 
 class ContextConsumer{
 

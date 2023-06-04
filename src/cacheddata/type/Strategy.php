@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\cacheddata\type;
+namespace jasonw4331\LuckPerms\cacheddata\type;
 
 use pocketmine\utils\EnumTrait;
 use function str_replace;

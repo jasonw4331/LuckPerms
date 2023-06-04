@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\cacheddata\result;
+namespace jasonw4331\LuckPerms\cacheddata\result;
 
-use jasonwynn10\LuckPerms\api\node\Node;
-use jasonwynn10\LuckPerms\api\util\Tristate;
-use jasonwynn10\LuckPerms\calculator\processor\PermissionProcessor;
+use jasonw4331\LuckPerms\api\node\Node;
+use jasonw4331\LuckPerms\api\util\Tristate;
+use jasonw4331\LuckPerms\calculator\processor\PermissionProcessor;
 use pocketmine\utils\EnumTrait;
 use pocketmine\utils\Utils;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\locale;
+namespace jasonw4331\LuckPerms\locale;
 
 class TranslationRepository{
 

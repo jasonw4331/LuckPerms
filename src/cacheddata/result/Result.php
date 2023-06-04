@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\cacheddata\result;
+namespace jasonw4331\LuckPerms\cacheddata\result;
 
-use jasonwynn10\LuckPerms\api\node\Node;
+use jasonw4331\LuckPerms\api\node\Node;
 
 /**
  * @template T

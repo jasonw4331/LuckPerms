@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\graph;
+namespace jasonw4331\LuckPerms\graph;
 
 use pocketmine\utils\EnumTrait;
 

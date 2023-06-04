@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\verbose\event;
+namespace jasonw4331\LuckPerms\verbose\event;
 
-use jasonwynn10\LuckPerms\api\query\QueryOptions;
-use jasonwynn10\LuckPerms\verbose\VerboseCheckTarget;
+use jasonw4331\LuckPerms\api\query\QueryOptions;
+use jasonw4331\LuckPerms\verbose\VerboseCheckTarget;
 
 abstract class VerboseEvent{
 	protected function __construct(private CheckOrigin $origin, private VerboseCheckTarget $checkTarget, private QueryOptions $checkQueryOptions, private int $checkTime, private \Throwable $checkTrace, private string $checkThread){ }

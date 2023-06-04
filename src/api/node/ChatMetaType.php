@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\node;
+namespace jasonw4331\LuckPerms\api\node;
 
-use jasonwynn10\LuckPerms\api\node\types\ChatMetaNodeBuilder;
-use jasonwynn10\LuckPerms\api\node\types\PrefixNode;
-use jasonwynn10\LuckPerms\api\node\types\SuffixNode;
+use jasonw4331\LuckPerms\api\node\types\ChatMetaNodeBuilder;
+use jasonw4331\LuckPerms\api\node\types\PrefixNode;
+use jasonw4331\LuckPerms\api\node\types\SuffixNode;
 use pocketmine\utils\EnumTrait;
 
 /**

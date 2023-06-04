@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\graph;
+namespace jasonw4331\LuckPerms\graph;
 
 use Ramsey\Collection\DoubleEndedQueue;
 use function in_array;

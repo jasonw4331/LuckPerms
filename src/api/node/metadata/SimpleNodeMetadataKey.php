@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\node\metadata;
+namespace jasonw4331\LuckPerms\api\node\metadata;
 
 use function get_class;
 use function mb_strtolower;

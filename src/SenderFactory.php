@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms;
+namespace jasonw4331\LuckPerms;
 
-use jasonwynn10\LuckPerms\api\util\Tristate;
-use jasonwynn10\LuckPerms\locale\TranslationManager;
-use jasonwynn10\LuckPerms\sender\AbstractSender;
-use jasonwynn10\LuckPerms\sender\Sender;
+use jasonw4331\LuckPerms\api\util\Tristate;
+use jasonw4331\LuckPerms\locale\TranslationManager;
+use jasonw4331\LuckPerms\sender\AbstractSender;
+use jasonw4331\LuckPerms\sender\Sender;
 use pocketmine\command\CommandSender;
 use pocketmine\console\ConsoleCommandSender;
 use pocketmine\lang\Translatable;

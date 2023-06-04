@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms;
+namespace jasonw4331\LuckPerms;
 
-use jasonwynn10\LuckPerms\config\generic\adapter\ConfigurationAdapter;
+use jasonw4331\LuckPerms\config\generic\adapter\ConfigurationAdapter;
 use pocketmine\utils\Config;
 use Ramsey\Collection\Map\AbstractTypedMap;
 use function mb_strtolower;

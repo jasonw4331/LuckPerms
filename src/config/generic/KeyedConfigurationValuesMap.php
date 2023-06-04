@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\config\generic;
+namespace jasonw4331\LuckPerms\config\generic;
 
-use jasonwynn10\LuckPerms\config\generic\key\ConfigKey;
+use jasonw4331\LuckPerms\config\generic\key\ConfigKey;
 use Ramsey\Collection\Map\TypedMap;
 use function array_fill;
 

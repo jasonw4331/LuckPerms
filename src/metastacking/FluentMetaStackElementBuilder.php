@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\metastacking;
+namespace jasonw4331\LuckPerms\metastacking;
 
-use jasonwynn10\LuckPerms\api\metastacking\MetaStackElement;
+use jasonw4331\LuckPerms\api\metastacking\MetaStackElement;
 use Ramsey\Collection\Map\AbstractTypedMap;
 use Ramsey\Collection\Map\TypedMap;
 

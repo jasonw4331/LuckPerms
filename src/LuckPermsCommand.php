@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms;
+namespace jasonw4331\LuckPerms;
 
 use CortexPE\Commando\BaseCommand;
-use jasonwynn10\LuckPerms\commands\group\GroupParentCommand;
-use jasonwynn10\LuckPerms\commands\track\TrackParentCommand;
-use jasonwynn10\LuckPerms\commands\user\UserParentCommand;
+use jasonw4331\LuckPerms\commands\group\GroupParentCommand;
+use jasonw4331\LuckPerms\commands\track\TrackParentCommand;
+use jasonw4331\LuckPerms\commands\user\UserParentCommand;
 use pocketmine\command\CommandSender;
 
 class LuckPermsCommand extends BaseCommand{

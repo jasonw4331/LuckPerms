@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\api\util;
+namespace jasonw4331\LuckPerms\api\util;
 
 use pocketmine\utils\EnumTrait;
 

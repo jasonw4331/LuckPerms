@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\metastacking;
+namespace jasonw4331\LuckPerms\metastacking;
 
-use jasonwynn10\LuckPerms\api\metastacking\MetaStackElement;
-use jasonwynn10\LuckPerms\api\node\ChatMetaType;
-use jasonwynn10\LuckPerms\api\node\types\ChatMetaNode;
-use jasonwynn10\LuckPerms\LuckPerms;
+use jasonw4331\LuckPerms\api\metastacking\MetaStackElement;
+use jasonw4331\LuckPerms\api\node\ChatMetaType;
+use jasonw4331\LuckPerms\api\node\types\ChatMetaNode;
+use jasonw4331\LuckPerms\LuckPerms;
 use pocketmine\utils\CloningRegistryTrait;
 
 /**

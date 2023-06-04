@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\verbose\event;
+namespace jasonw4331\LuckPerms\verbose\event;
 
-use jasonwynn10\LuckPerms\api\query\QueryOptions;
-use jasonwynn10\LuckPerms\cacheddata\result\StringResult;
-use jasonwynn10\LuckPerms\node\utils\NodeJsonSerializer;
-use jasonwynn10\LuckPerms\verbose\VerboseCheckTarget;
+use jasonw4331\LuckPerms\api\query\QueryOptions;
+use jasonw4331\LuckPerms\cacheddata\result\StringResult;
+use jasonw4331\LuckPerms\node\utils\NodeJsonSerializer;
+use jasonw4331\LuckPerms\verbose\VerboseCheckTarget;
 
 class MetaCheckEvent extends VerboseEvent {
 

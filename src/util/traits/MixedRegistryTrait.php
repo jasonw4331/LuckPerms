@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\util\traits;
+namespace jasonw4331\LuckPerms\util\traits;
 
 use function count;
 use function mb_strtoupper;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\webeditor;
+namespace jasonw4331\LuckPerms\webeditor;
 
 class WebEditorRequest{
 

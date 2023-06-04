@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\build\update_registry_annotations;
+namespace jasonw4331\LuckPerms\build\update_registry_annotations;
 
 use function basename;
 use function class_exists;
