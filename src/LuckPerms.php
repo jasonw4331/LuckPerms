@@ -1,10 +1,10 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms;
 
+use CortexPE\Commando\PacketHooker;
 use jasonwynn10\LuckPerms\actionlog\LogDispatcher;
 use jasonwynn10\LuckPerms\api\ApiRegistrationUtil;
 use jasonwynn10\LuckPerms\api\LuckPermsApiProvider;
@@ -19,6 +19,7 @@ use jasonwynn10\LuckPerms\event\EventDispatcher;
 use jasonwynn10\LuckPerms\event\gen\GeneratedEventClass;
 use jasonwynn10\LuckPerms\extension\SimpleExtensionManager;
 use jasonwynn10\LuckPerms\http\BytebinClient;
+use jasonwynn10\LuckPerms\http\BytesocksClient;
 use jasonwynn10\LuckPerms\inheritance\InheritanceGraphFactory;
 use jasonwynn10\LuckPerms\inject\permissible\LuckPermsPermissible;
 use jasonwynn10\LuckPerms\inject\permissible\Mode;
@@ -41,18 +42,18 @@ use jasonwynn10\LuckPerms\model\manager\group\StandardGroupManager;
 use jasonwynn10\LuckPerms\model\manager\track\StandardTrackManager;
 use jasonwynn10\LuckPerms\model\manager\user\StandardUserManager;
 use jasonwynn10\LuckPerms\model\User;
-use jasonwynn10\LuckPerms\node\types\Permission;
+use jasonwynn10\LuckPerms\sender\Sender;
 use jasonwynn10\LuckPerms\storage\implementation\file\watcher\FileWatcher;
 use jasonwynn10\LuckPerms\storage\misc\DataConstraints;
 use jasonwynn10\LuckPerms\storage\Storage;
 use jasonwynn10\LuckPerms\storage\StorageFactory;
-use jasonwynn10\LuckPerms\tasks\Buffer;
 use jasonwynn10\LuckPerms\tasks\CacheHousekeepingTask;
 use jasonwynn10\LuckPerms\tasks\ExpireTemporaryTask;
 use jasonwynn10\LuckPerms\tasks\SyncTask;
 use jasonwynn10\LuckPerms\treeview\PermissionRegistry;
 use jasonwynn10\LuckPerms\util\AbstractConnectionListener;
 use jasonwynn10\LuckPerms\verbose\VerboseHandler;
+use jasonwynn10\LuckPerms\webeditor\store\WebEditorStore;
 use pocketmine\console\ConsoleCommandSender;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
@@ -61,6 +62,11 @@ use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 use pocketmine\utils\SingletonTrait;
 use Ramsey\Uuid\Uuid;
+use function array_map;
+use function array_merge;
+use function microtime;
+use function strtolower;
+use const DIRECTORY_SEPARATOR;
 
 class LuckPerms extends PluginBase{
 	use SingletonTrait {
@@ -77,6 +83,8 @@ class LuckPerms extends PluginBase{
 	private LogDispatcher $logDispatcher;
 	private LuckPermsConfiguration $configuration;
 	private BytebinClient $bytebin;
+	private BytesocksClient $bytesocks;
+	private WebEditorStore $webEditorStore;
 	private TranslationRepository $translationRepository;
 	private ?FileWatcher $fileWatcher = null;
 	private Storage $storage;
@@ -90,7 +98,7 @@ class LuckPerms extends PluginBase{
 
 	private SenderFactory $senderFactory;
 	private AbstractConnectionListener $connectionListener;
-	private LuckPermsCommandExecutor $commandManager;
+	private LuckPermsCommand $commandManager;
 	private StandardUserManager $userManager;
 	private StandardGroupManager $groupManager;
 	private StandardTrackManager $trackManager;
@@ -99,6 +107,9 @@ class LuckPerms extends PluginBase{
 	private LuckPermsPermissionMap $permissionMap;
 	private LuckPermsDefaultsMap $defaultPermissionMap;
 
+	/**
+	 * Performs the initial actions to load the plugin
+	 */
 	public function onLoad() : void{
 		self::$instance = $this;
 
@@ -107,6 +118,7 @@ class LuckPerms extends PluginBase{
 		$property->setAccessible(true);
 		$this->consoleCommandSender = $property->getValue(Server::getInstance());
 
+		// load translations
 		$this->translationManager = new TranslationManager($this);
 		$this->translationManager->reload();
 
@@ -115,11 +127,14 @@ class LuckPerms extends PluginBase{
 	}
 
 	public function onEnable() : void{
+		// load the sender factory instance
 		$this->senderFactory = new SenderFactory($this);
 
+		// load some utilities early
 		$this->verboseHandler = new VerboseHandler($this->getScheduler());
 		$this->logDispatcher = new LogDispatcher($this);
 
+		// load configuration
 		$this->getLogger()->debug("Loading configuration...");
 		$this->configuration = new LuckPermsConfiguration($this, new MultiConfigurationAdapter(
 			new SystemPropertyConfigAdapter($this),
@@ -127,9 +142,9 @@ class LuckPerms extends PluginBase{
 			new ConfigAdapter($this, $this->getDataFolder() . "config.yml")
 		));
 
-		$httpClient = OkHttpClient::builder()->callTimeout(15)->build();
-
-		$this->bytebin = new BytebinClient($httpClient, $this->getConfiguration()->get(ConfigKeys::BYTEBIN_URL()), 'luckperms');
+		$this->bytebin = new BytebinClient($this->getConfiguration()->get(ConfigKeys::BYTEBIN_URL()), 'luckperms');
+		$this->bytesocks = new BytesocksClient($this->getConfiguration()->get(ConfigKeys::BYTEBIN_URL()), 'luckperms/editor');
+		$this->webEditorStore = new WebEditorStore($this);
 
 		$this->translationRepository = new TranslationRepository($this);
 		$this->translationRepository->scheduleRefresh();
@@ -153,9 +168,15 @@ class LuckPerms extends PluginBase{
 
 		$this->syncTaskBuffer = new Buffer($this);
 
-		$command = $this->getCommand('luckperms');
-		$this->commandManager = new LuckPermsCommandExecutor($this, $command);
-		$this->commandManager->register();
+		PacketHooker::register($this);
+		$this->getServer()->getCommandMap()->register($this->getName(),
+			new LuckPermsCommand(
+				$this,
+				'luckperms',
+				'Manage permissions',
+				['lp', 'perm', 'perms', 'permission', 'permissions']
+			)
+		);
 
 		$this->getLogger()->debug("Loading internal permission managers...");
 		$this->inheritanceGraphFactory = new InheritanceGraphFactory($this);
@@ -253,7 +274,7 @@ class LuckPerms extends PluginBase{
 			}));
 		}
 
-		$timeTaken = \microtime(true) - $this->getServer()->getStartTime();
+		$timeTaken = microtime(true) - $this->getServer()->getStartTime();
 		$this->getLogger()->debug("Sucessfully enabled. (took {$timeTaken}ms)");
 	}
 
@@ -327,7 +348,7 @@ class LuckPerms extends PluginBase{
 	}
 
 	public function lookupUniqueId(string $username) : ?Uuid{
-		$uniqueId = $this->getStorage()->getPlayerUniqueId(\strtolower($username));
+		$uniqueId = $this->getStorage()->getPlayerUniqueId(strtolower($username));
 
 		$this->getEventDispatcher()->dispatchUniqueIdLookup($username, $uniqueId);
 
@@ -389,13 +410,16 @@ class LuckPerms extends PluginBase{
 	}
 
 	public function getOnlineSenders() : array{
-		return \array_merge([$this->getConsoleSender()], \array_map(function($player){
+		return array_merge([$this->getConsoleSender()], array_map(function($player){
 			return $this->getSenderFactory()->wrap($player);
 		}, $this->getServer()->getOnlinePlayers()));
 	}
 
-	public function getConsoleSender(){
-		return $this->getSenderFactory()->wrap(self::$consoleCommandSender);
+	/**
+	 * @return Sender<ConsoleCommandSender>
+	 */
+	public function getConsoleSender() : Sender{
+		return $this->senderFactory->wrap($this->consoleCommandSender);
 	}
 
 	public function getSenderFactory() : SenderFactory{
@@ -406,7 +430,7 @@ class LuckPerms extends PluginBase{
 		return $this->connectionListener;
 	}
 
-	public function getCommandManager() : LuckPermsCommandExecutor{
+	public function getCommandManager() : LuckPermsCommand{
 		return $this->commandManager;
 	}
 

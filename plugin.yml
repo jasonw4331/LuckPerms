@@ -7,12 +7,3 @@ load: STARTUP
 author: jasonwynn10
 description: A permissions plugin
 website: https://luckperms.net
-
-commands:
-  luckperms:
-    description: Manage permissions
-    aliases: [lp, perm, perms, permission, permissions]
-    permission: luckperms.command
-permissions:
-  luckperms.command:
-    description: Manage permissions

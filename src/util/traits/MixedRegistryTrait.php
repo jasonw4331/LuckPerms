@@ -1,9 +1,12 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\util\traits;
+
+use function count;
+use function mb_strtoupper;
+use function preg_match;
 
 /**
  * @template T
@@ -16,7 +19,7 @@ trait MixedRegistryTrait{
 	private static $members = null;
 
 	private static function verifyName(string $name) : void{
-		if(\preg_match('/^(?!\d)[A-Za-z\d_]+$/u', $name) === 0){
+		if(preg_match('/^(?!\d)[A-Za-z\d_]+$/u', $name) === 0){
 			throw new \InvalidArgumentException("Invalid member name \"$name\", should only contain letters, numbers and underscores, and must not start with a number");
 		}
 	}
@@ -30,7 +33,7 @@ trait MixedRegistryTrait{
 	 */
 	private static function _registryRegister(string $name, mixed $member) : void{
 		self::verifyName($name);
-		$upperName = \mb_strtoupper($name);
+		$upperName = mb_strtoupper($name);
 		if(isset(self::$members[$upperName])){
 			throw new \InvalidArgumentException("\"$upperName\" is already reserved");
 		}
@@ -61,7 +64,7 @@ trait MixedRegistryTrait{
 	 */
 	private static function _registryFromString(string $name) : mixed{
 		self::checkInit();
-		$upperName = \mb_strtoupper($name);
+		$upperName = mb_strtoupper($name);
 		if(!isset(self::$members[$upperName])){
 			throw new \InvalidArgumentException("No such registry member: " . self::class . "::" . $upperName);
 		}
@@ -69,16 +72,16 @@ trait MixedRegistryTrait{
 	}
 
 	/**
-	 * @param string              $name
-	 * @param mixed[]             $arguments
+	 * @param string  $name
+	 * @param mixed[] $arguments
 	 *
 	 * @phpstan-param list<mixed> $arguments
 	 *
 	 * @return T
 	 */
 	public static function __callStatic($name, $arguments){
-		if(\count($arguments) > 0){
-			throw new \ArgumentCountError("Expected exactly 0 arguments, " . \count($arguments) . " passed");
+		if(count($arguments) > 0){
+			throw new \ArgumentCountError("Expected exactly 0 arguments, " . count($arguments) . " passed");
 		}
 		try{
 			return self::_registryFromString($name);

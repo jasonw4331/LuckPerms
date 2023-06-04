@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms;
@@ -8,6 +7,7 @@ namespace jasonwynn10\LuckPerms;
 use jasonwynn10\LuckPerms\config\generic\adapter\ConfigurationAdapter;
 use pocketmine\utils\Config;
 use Ramsey\Collection\Map\AbstractTypedMap;
+use function mb_strtolower;
 
 class ConfigAdapter implements ConfigurationAdapter{
 
@@ -26,7 +26,7 @@ class ConfigAdapter implements ConfigurationAdapter{
 	}
 
 	public function getLowercaseString(string $path, ?string $def) : string{
-		return \mb_strtolower($this->getString($path, $def));
+		return mb_strtolower($this->getString($path, $def));
 	}
 
 	public function getInteger(string $path, int $def) : int{

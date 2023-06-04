@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\api\util;
@@ -37,7 +36,7 @@ final class Tristate{
 		$this->booleanValue = $booleanValue;
 	}
 
-	public function of(bool|null $value) : Tristate{
+	public function of(?bool $value) : Tristate{
 		return $value === null ? Tristate::UNDEFINED() : ($value ? Tristate::TRUE() : Tristate::FALSE());
 	}
 

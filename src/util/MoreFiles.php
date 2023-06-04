@@ -1,10 +1,9 @@
 <?php
 
-
 declare(strict_types=1);
 
-namespace jasonwynn10\LuckPerms\util;
+namespace jasonwynn10\LuckPerms;
 
-final class MoreFiles{
+class MoreFiles{
 
 }

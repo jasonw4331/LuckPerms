@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\locale;
@@ -8,8 +7,13 @@ namespace jasonwynn10\LuckPerms\locale;
 use jasonwynn10\LuckPerms\LuckPerms;
 use Ramsey\Collection\Map\TypedMap;
 use Ramsey\Collection\Set;
-use Utopia\Locale\Locale;
 use Webmozart\PathUtil\Path;
+use function count;
+use function is_dir;
+use function mkdir;
+use function str_ends_with;
+use function strlen;
+use function substr;
 
 /**
  * @template T
@@ -33,11 +37,11 @@ final class TranslationManager{
 		$this->repositoryTranslationsDirectory = Path::join($this->translationsDirectory, "repository");
 		$this->customTranslationsDirectory = Path::join($this->translationsDirectory, "custom");
 
-		if(!\is_dir($this->repositoryTranslationsDirectory)){
-			\mkdir($this->repositoryTranslationsDirectory);
+		if(!is_dir($this->repositoryTranslationsDirectory)){
+			@mkdir($this->repositoryTranslationsDirectory);
 		}
-		if(!\is_dir($this->customTranslationsDirectory)){
-			\mkdir($this->customTranslationsDirectory);
+		if(!is_dir($this->customTranslationsDirectory)){
+			@mkdir($this->customTranslationsDirectory);
 		}
 	}
 
@@ -70,10 +74,11 @@ final class TranslationManager{
 
 		// load custom translations first, then the base (built-in) translations after.
 		$this->loadFromFileSystem($this->customTranslationsDirectory, false);
-		$this->loadFromFileSystem($this->repositoryTranslationsDirectory, false);
+		$this->loadFromFileSystem($this->repositoryTranslationsDirectory, true);
+		$this->loadFromResourceBundle();
 
 		// register it to the global source, so our translations can be picked up by adventure-platform
-		GlobalTranslator::get()->addSource($this->registry);
+		GlobalTranslator::translator()->addSource($this->registry);
 	}
 
 	private function loadFromResourceBundle() : void{
@@ -86,23 +91,23 @@ final class TranslationManager{
 	}
 
 	public function isTranslationFile(string $path) : bool{
-		return \str_ends_with($path, ".properties");
+		return str_ends_with($path, ".properties");
 	}
 
 	public function loadFromFileSystem(string $directory, bool $suppressDuplicatesError) : void{
 		$translationFiles = [];
-		$files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS));
-		foreach($files as $file){
+		/** @var \SplFileInfo $file */
+		foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS)) as $file){
 			if($file->isFile() && $this->isTranslationFile($file->getFilename())){
 				$translationFiles[] = $file->getPathname();
 			}
 		}
 
-		if(\count($translationFiles) === 0){
+		if(count($translationFiles) === 0){
 			return;
 		}
 
-		$loaded = new TypedMap(Locale::class, ResourceBundle::class);
+		$loaded = new TypedMap('string', ResourceBundle::class);
 		foreach($translationFiles as $translationFile){
 			$result = $this->loadTranslationFile($translationFile);
 			$loaded[$result->getKey()] = $result->getValue();
@@ -123,12 +128,14 @@ final class TranslationManager{
 
 	private function loadTranslationFile(\SplFileInfo $translationFile) : TypedMap{
 		$fileName = $translationFile->getFilename();
-		$localeString = \substr($fileName, 0, -\strlen(".properties"));
+		$localeString = substr($fileName, 0, -strlen(".properties"));
 		$locale = $this->parseLocale($localeString);
 
-		if($locale === null)
+		if($locale === null){
 			throw new \InvalidArgumentException("Invalid locale string: " . $localeString);
+		}
 
+		$bundle = null;
 	}
 
 }

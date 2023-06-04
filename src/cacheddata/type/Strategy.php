@@ -1,11 +1,12 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\cacheddata\type;
 
 use pocketmine\utils\EnumTrait;
+use function str_replace;
+use function strtoupper;
 
 /**
  * This doc-block is generated automatically, do not modify it manually.
@@ -57,7 +58,7 @@ abstract class Strategy{
 	public abstract function select(array $values) : string;
 
 	public static function parse(string $s) : ?self{
-		$func_name = \strtoupper(\str_replace('-', '_', $s));
+		$func_name = strtoupper(str_replace('-', '_', $s));
 		return self::$func_name(); // TODO: return dynamic function
 	}
 }

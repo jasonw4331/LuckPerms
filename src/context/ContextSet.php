@@ -114,7 +114,6 @@ abstract class ContextSet implements \IteratorAggregate{
 	 * @param string $key the key to get values for
 	 *
 	 * @return Set<string> a set of values
-	 * @throws NullPointerException if the key is null
 	 */
 	abstract public function getValues(string $key) : Set;
 
@@ -135,11 +134,10 @@ abstract class ContextSet implements \IteratorAggregate{
 	/**
 	 * Returns if the ContextSet contains a given context pairing.
 	 *
-	 * @param string $key the key to look for
+	 * @param string $key   the key to look for
 	 * @param string $value the value to look for
 	 *
 	 * @return bool true if the set contains the context pair
-	 * @throws NullPointerException if the key or value is null
 	 */
 	abstract public function contains(string $key, string $value) : bool;
 
@@ -149,7 +147,6 @@ abstract class ContextSet implements \IteratorAggregate{
 	 * @param Context $entry the entry to look for
 	 *
 	 * @return bool true if the set contains the context pair
-	 * @throws NullPointerException if the key or value is null
 	 */
 	public function containsContext(Context $entry) : bool{
 		return $this->contains($entry->getKey(), $entry->getValue());
@@ -158,7 +155,7 @@ abstract class ContextSet implements \IteratorAggregate{
 	/**
 	 * Returns if the ContextSet contains any of the given context pairings.
 	 *
-	 * @param string           $key the key to look for
+	 * @param string           $key    the key to look for
 	 * @param iterable<string> $values the values to look for
 	 *
 	 * @return bool true if the set contains any of the pairs
@@ -190,7 +187,7 @@ abstract class ContextSet implements \IteratorAggregate{
 	 * Returns if this ContextSet is "satisfied" by another set, according to the given mode.
 	 *
 	 * @param ContextSet         $other the other set
-	 * @param ContextSatisfyMode $mode the mode to use
+	 * @param ContextSatisfyMode $mode  the mode to use
 	 *
 	 * @return bool true if this context set is satisfied by the other
 	 * @since 5.2
@@ -211,4 +208,3 @@ abstract class ContextSet implements \IteratorAggregate{
 	 */
 	abstract public function size() : int;
 }
-

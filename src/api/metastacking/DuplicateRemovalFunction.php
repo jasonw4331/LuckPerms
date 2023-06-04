@@ -1,12 +1,13 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\api\metastacking;
 
 use pocketmine\utils\EnumTrait;
 use pocketmine\utils\Utils;
+use function array_reverse;
+use function count;
 
 /**
  * This doc-block is generated automatically, do not modify it manually.
@@ -29,7 +30,7 @@ final class DuplicateRemovalFunction{
 		self::registerAll(
 			new self("RETAIN_ALL", function(array &$list) : void{ }),
 			new self("FIRST_ONLY", function(array &$list) : void{
-				$seen = new \SplFixedArray(\count($list) - 1);
+				$seen = new \SplFixedArray(count($list) - 1);
 				foreach($list as $key => $item){
 					try{
 						$seen[] = $item;
@@ -39,8 +40,8 @@ final class DuplicateRemovalFunction{
 				}
 			}),
 			new self("LAST_ONLY", function(array &$list) : void{
-				$seen = new \SplFixedArray(\count($list) - 1);
-				foreach(\array_reverse($list, true) as $key => $item){
+				$seen = new \SplFixedArray(count($list) - 1);
+				foreach(array_reverse($list, true) as $key => $item){
 					try{
 						$seen[] = $item;
 					}catch(\Exception $e){

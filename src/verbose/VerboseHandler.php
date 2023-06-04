@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace jasonwynn10\LuckPerms\verbose;
 
 use jasonwynn10\LuckPerms\api\query\QueryOptions;
+use jasonwynn10\LuckPerms\cacheddata\result\StringResult;
 use jasonwynn10\LuckPerms\cacheddata\result\TristateResult;
-use jasonwynn10\LuckPerms\MetaCheckEvent;
 use jasonwynn10\LuckPerms\sender\Sender;
 use jasonwynn10\LuckPerms\verbose\event\CheckOrigin;
+use jasonwynn10\LuckPerms\verbose\event\MetaCheckEvent;
 use jasonwynn10\LuckPerms\verbose\event\PermissionCheckEvent;
 use jasonwynn10\LuckPerms\verbose\event\VerboseEvent;
 use pocketmine\scheduler\ClosureTask;
@@ -70,9 +71,9 @@ final class VerboseHandler{
 	 * @param VerboseCheckTarget $checkTarget the target of the meta check
 	 * @param QueryOptions       $checkQueryOptions the query options used for the check
 	 * @param string             $key the meta key which was checked for
-	 * @param string             $result the result of the meta check
+	 * @param StringResult             $result the result of the meta check
 	 */
-	public function offerMetaCheckEvent(CheckOrigin $origin, VerboseCheckTarget $checkTarget, QueryOptions $checkQueryOptions, string $key, string $result) : void{
+	public function offerMetaCheckEvent(CheckOrigin $origin, VerboseCheckTarget $checkTarget, QueryOptions $checkQueryOptions, string $key, StringResult $result) : void{
 		// don't bother even processing the check if there are no listeners registered
 		if(!$this->listening){
 			return;

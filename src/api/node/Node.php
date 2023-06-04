@@ -18,7 +18,7 @@ abstract class Node{
 
 	abstract function getKey() : string;
 
-	abstract function getValue() : string;
+	abstract function getValue() : bool;
 
 	public function isNegated() : bool{
 		return !$this->getValue();

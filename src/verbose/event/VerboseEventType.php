@@ -7,6 +7,9 @@ namespace jasonwynn10\LuckPerms\verbose\event;
 use pocketmine\utils\EnumTrait;
 use function mb_strtolower;
 
+/**
+ * @generate-registry-docblock
+ */
 class VerboseEventType{
 	use EnumTrait;
 

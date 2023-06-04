@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace jasonwynn10\LuckPerms\util;
 
 use pocketmine\utils\Utils;
+use function hash;
+use function sprintf;
 
 /**
  * A final container class representing an optional value that may or may not be present.
@@ -122,7 +124,7 @@ final class Optional{
 	 * If a value is present, performs the given action with the value,
 	 * otherwise performs the given empty-based action.
 	 *
-	 * @param \Closure(Tvalue) : void $action The action to be performed, if a value is present
+	 * @param \Closure(Tvalue) : void $action      The action to be performed, if a value is present
 	 * @param \Closure() : void       $emptyAction The empty-based action to be performed, if no value is present
 	 */
 	public function ifPresentOrElse(callable $action, callable $emptyAction) : void{
@@ -315,7 +317,7 @@ final class Optional{
 	 *         present
 	 */
 	public function hashCode() : int{
-		return $this->value !== null ? \hash($this->value) : 0;
+		return $this->value !== null ? hash($this->value) : 0;
 	}
 
 	/**

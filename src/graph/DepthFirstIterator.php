@@ -1,11 +1,11 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\graph;
 
 use Ramsey\Collection\DoubleEndedQueue;
+use function in_array;
 
 final class DepthFirstIterator extends AbstractIterator{
 	private Graph $graph;
@@ -27,14 +27,14 @@ final class DepthFirstIterator extends AbstractIterator{
 			}
 			/** @var NodeAndSuccessors $node */
 			$node = $this->stack->firstElement();
-			$firstVisit = \in_array($node->node, $this->visited, true);
+			$firstVisit = in_array($node->node, $this->visited, true);
 			$lastVisit = !$node->successorIterator->hasNext();
 			$produceNode = ($firstVisit && $this->order === Order::PRE_ORDER()) || ($lastVisit && $this->order === Order::POST_ORDER());
 			if($lastVisit){
 				$this->stack->removeLast();
 			}else{
 				$successor = $node->successorIterator->next();
-				if(!\in_array($successor, $this->visited, true)){
+				if(!in_array($successor, $this->visited, true)){
 					$this->stack->addFirst($this->withSuccessors($successor));
 				}
 			}

@@ -1,11 +1,11 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace jasonwynn10\LuckPerms\storage;
 
 use pocketmine\utils\EnumTrait;
+use function strtolower;
 
 /**
  * This doc-block is generated automatically, do not modify it manually.
@@ -58,7 +58,7 @@ final class StorageType{
 	public static function parse(string $name, StorageType $default) : StorageType{
 		foreach(self::getAll() as $t){
 			foreach($t->getIdentifiers() as $id){
-				if(\strtolower($name) === \strtolower($id))
+				if(strtolower($name) === strtolower($id))
 					return $t;
 			}
 		}
